@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>profile</title>
+</head>
+<body align="center">
+    <h1>Ændrer password?</h1>
+		<form action="/opdaterprofil" method="POST">
+            <input type="text" name="password" id="password" placeholder="Nyt password"
+          required />
+			<input type="submit" value="Submit" />
+		</form>
+
+        <h1>Slet din bruger?</h1>
+		<form action="/sletprofil" method="POST">
+			<input type="submit" value="Submit" />
+		</form>
+        <br>
+
+        <a  href="./home.html">Gå tilbage</a>
+        <script src="sendToIndex.js"></script>
+</body>
+</html>

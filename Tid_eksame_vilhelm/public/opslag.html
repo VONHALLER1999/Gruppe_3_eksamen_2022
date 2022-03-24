@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Se opslagene</h1>
+    <form>
+
+      <label>Vælg en kategori:</label>
+      <select name="sel" id="sel">
+        <option value="Bil">Bil</option>
+        <option value="Brandeovn">Brandeovn</option>
+        <option value="Kasket">Kasket</option>
+      </select>
+      <input id="BilerBtn" type="submit" value="Submit" />
+    </form>
+
+    <div id="alleopslag"></div>
+    <h1>Se dine opslag</h1>
+
+    <table id="table">
+        <tr>
+            <th>Email</th>
+            <th>Kategori</th>
+            <th>Pris</th>
+            <th>Billede</th>
+            <th>Id</th>
+        </tr>
+    </table>
+    <input id="mineopslag" type="submit" value="Submit" />
+    <br /><br />
+    <a id="mylink" href="./home.html">HOME</a>
+</body>
+<script src="opslag.js"></script>
+<script src="sendToIndex.js"></script>
+</html>

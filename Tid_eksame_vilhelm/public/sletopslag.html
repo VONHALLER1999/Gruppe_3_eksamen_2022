@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>My Form</title>
+    <style>
+      #mylink {
+        font-size: 25px;
+      }
+    </style>
+  </head>
+  <body align="center">
+    <header>
+      <h1>Slet opslag</h1>
+    </header>
+
+    <form action="/sletopslag" method="POST">
+      <fieldset>
+        <label>Id'et på det opslag du vil slette</label>
+        <br /><br />
+        <input type="text" id="id" name="id" placeholder="Id" required />
+       <br /><br />
+        <input id="sletBtn" type="submit" value="Submit" />
+      </fieldset>
+    </form>
+    <br /><br />
+    <a id="mylink" href="./home.html">HOME</a>
+    <script src="sendToIndex.js"></script>
+  </body>
+</html>
