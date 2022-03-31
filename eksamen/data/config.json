@@ -1,0 +1,14 @@
+{
+  "server": "examcbs.database.windows.net",
+  "authentication": {
+    "type": "default",
+    "options": {
+      "userName": "vilgro",
+      "password": "Ve1lpm2b"
+    }
+  },
+  "options": {
+    "encrypt": true,
+    "database": "exam"
+  }
+}
