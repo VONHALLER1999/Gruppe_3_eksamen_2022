@@ -4,6 +4,7 @@ const PORT = 1010;
 const app = express();
 const bodyParser = require("body-parser") 
 const path = require("path");
+const session = require('express-session'); 
 
 //makes sure that the server is up and running
 app.listen(PORT, () => console.log(`Server lytter på port ${PORT}`));
@@ -14,7 +15,12 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //sørger for at 
 app.use(express.static(path.join(__dirname, "./public")));
 
-
+//session coockie                                  
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
 
 //SQL connection 
 //npm install tedious
@@ -44,6 +50,15 @@ connection.on("connect", function(err){
 
 //vi kalder function, som trigger .on function
 connection.connect();
+
+//gå til login.html før index.html, såfremt der ikke er logged ind på en bruger                     
+app.get('/', function(req, res) {
+  if (req.session.loggedIn) {
+    res.sendFile(__dirname + '/public/index.html');
+  } else {
+    res.sendFile(__dirname + '/public/login.html');
+  }
+});
 
 function executeSQL(){
 
