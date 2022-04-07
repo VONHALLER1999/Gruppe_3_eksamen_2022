@@ -4,11 +4,11 @@
     "type": "default",
     "options": {
       "userName": "vilgro",
-      "password": "facebooknetbankkode"
+      "password": "Ve1lpm2b"
     }
   },
   "options": {
     "encrypt": true,
-    "database": "exam"
+    "database": "thegreenpaper"
   }
 }
