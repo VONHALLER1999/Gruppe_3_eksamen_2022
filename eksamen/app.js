@@ -67,5 +67,3 @@ app.post("/login", async (req, res) => {
    console.log(err)
   }
  });
-
-
