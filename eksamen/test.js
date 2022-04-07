@@ -1,6 +1,9 @@
 const db = require('./db.js');
 
 
-db.findUser("Debra");
+//db.findUser("Antn");
 
-//db.loginUser("Debra", "Burks")
+db.loginUser("test@1", "test")
+
+//db.createUser("Anton", "Anton");
+
