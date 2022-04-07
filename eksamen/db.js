@@ -13,7 +13,7 @@ class DB {
       console.dir(err)
    }
   }
-
+  // LAV BRUGER
   async createUser(email, password) {
     try {
       const result = await this.findUser(email);
@@ -21,11 +21,12 @@ class DB {
       if (result) {
         console.dir("User already exists")
         sql.close();
+        return false;
       }else{
         await sql.query`INSERT INTO [User](email,psw) values(${email}, ${password})`
         console.dir("User was created");
         sql.close()
-        return;
+        return true;
         ;
       }
     }catch(err) {
@@ -92,7 +93,6 @@ async loginUser(email, password){
   
   
 }
-
 // exporter DB så fs metoderne kan bruges i andre sammenhæng
 module.exports = new DB();
 
