@@ -1,9 +1,12 @@
-const db = require('.helpers/db.js');
+const db = require('./helpers/db.js');
 
 
 //db.findUser("Antn");
 
-db.loginUser("test@1", "test")
+db.findUser("test@1")
 
 //db.createUser("Anton", "Anton");
+
+
+//db.findUser("1234@1234.dk", "1234")
 

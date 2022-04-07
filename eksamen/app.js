@@ -4,8 +4,9 @@ const PORT = 1010;
 const app = express();
 const bodyParser = require("body-parser") 
 const path = require("path");
-const session = require('express-session'); 
-const db = require(".helpers/db.js");
+const session = require("express-session");
+//const session = require('express-session'); 
+const db = require("./helpers/db.js");
 
 //makes sure that the server is up and running
 app.listen(PORT, () => console.log(`Server lytter på port ${PORT}`));
@@ -37,15 +38,34 @@ app.get('/', function(req, res) {
 //when signup on the signup page is clicked on the client side the server will receive the data from the client and save it to the database
 app.post("/signup", async (req, res) => {
  try {
-
-  if (db.createUser(req.body.email, req.body.password)) {
+      const result = await db.createUser(req.body.email, req.body.password)
+  if (result) {
     console.log("User blev oprettet")
+    res.sendFile("/eksamen/public/login.html")
   } else {
-    console.log("User findes allerede")
+    console.log("User findes allerede");
   }
+
  }catch (err){
   console.log(err)
  }
 });
+
+
+
+app.post("/login", async (req, res) => {
+  try {
+      const result = await db.loginUser(req.body.email, req.body.password)
+   if (result == true) {
+     console.log("User login succes")
+     res.sendFile("/eksamen/public/index.html")
+   } else {
+     console.log("Email eller kodeord er forkert");
+     res.send("Error");
+   }
+  }catch (err){
+   console.log(err)
+  }
+ });
 
 

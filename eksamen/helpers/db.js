@@ -19,15 +19,14 @@ class DB {
       const result = await this.findUser(email);
 
       if (result) {
-        console.dir("User already exists")
-        sql.close();
-        return false;
-      }else{
         await sql.query`INSERT INTO [User](email,psw) values(${email}, ${password})`
         console.dir("User was created");
-        sql.close()
+        //sql.close()
         return true;
-        ;
+      }else{
+        console.dir("User already exists");
+        //sql.close();
+        return false;
       }
     }catch(err) {
       console.log(err)
@@ -45,14 +44,18 @@ class DB {
       //Tjekker om der er fundet noget i DB, hvis ikke returnere den, da 0 rowsaffected betyder intet fundet
       if (result.rowsAffected == 0) {
           console.dir ("User not found");
-          sql.close();
-          return false;
-      }
+          //sql.close();
+          return true;
+      }else {
+        console.dir("User found");
+        return result;
+        
+      }/*
       //Hvis noget er fundet tjekker vi nu om kodeord og password matcher db info
       if(result.recordset[0].email == userEmail){
           console.dir("User Found");
           return result;
-      }
+      }*/
       //Error handling
       } catch(err) {
           console.log(err);
@@ -65,20 +68,20 @@ class DB {
 
 async loginUser(email, password){
   try {
-      //Tjekker om der er fundet noget i DB, hvis ikke returnere den, da 0 rowsaffected betyder intet fundet
+      //Tjekker om der er fundet noget i DB, hvis ikke returnere den "true"
       const result = await this.findUser(email);
 
-      if (!result) {
+      if (result == true) {
           console.dir ("User not found");
           sql.close();
-          return;
+          return false;
       }
       //Hvis noget er fundet tjekker vi nu om kodeord og password matcher db info
       if(result.recordset[0].email == email && result.recordset[0].psw == password){
           console.dir("User logged in successfully");
           //req.session.loggedin = true;
           sql.close();
-          return;
+          return true;
       }else {
           console.dir("Email or Password is incorrect");
           //sql.close();
