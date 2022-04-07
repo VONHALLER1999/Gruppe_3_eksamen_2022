@@ -1,7 +1,7 @@
 //SQL connection 
 //Sat op med mssql
 const sql = require('mssql');
-
+/*
 async function call(){
   try {
       // make sure that any items are correctly URL encoded in the connection string
@@ -16,55 +16,78 @@ async function call(){
 }
 call();
 
-
-const ABSOLUTE_PATH = __dirname + "/../data";
-const USER_FILE = "/users.json";
+*/
 
 class DB {
+
+  /*
   constructor() {
     this.users = this.openFile(USER_FILE);
   }
-  // CORE 
-  // Save file
-  saveFile(fileName, contentString) {
-    fs.writeFileSync(ABSOLUTE_PATH + fileName, contentString);
-  }
 
-  // Open file
-  openDb(email) {
-      const result = await sql.query`select * From User where name = ${email}`
-      return result;
-  }
+  */
 
+ 
   // LOGIN DB 
-  saveUser(user) {
-    this.users.push(user);
-    this.saveFile(USER_FILE, JSON.stringify(this.users));
-  }
-
-  deleteUser(user) {
-    this.users = this.users.filter((x) => x.email != user.email);
-    this.saveFile(USER_FILE, JSON.stringify(this.users));
-  }
-
-  findUser(email) {
-    const result = await sql.query`select * From User where name = ${email}`
-    if(result.rowsAffected == 0){
-        console.log("User not created");
-    }else{
-        return result;
-        }
-  }
-
-  loginUser(email, password){
-      var user = {
-          email: user.email,
-          password: user.password
+  async findUser(email) {
+    try {
+      // make sure that any items are correctly URL encoded in the connection string
+      await sql.connect('Server=cbs1.database.windows.net,1433;Database=First;User Id=anton;Password=NiMiAn@98a;?encrypt=true')
+      console.dir("Connected to SQL Server");
+      const result = await sql.query`select * from sales.customers where first_name = ${email}`;
+      //console.dir(result.recordset[0].first_name);
+      //console.dir(result)
+      //Tjekker om der er fundet noget i DB, hvis ikke returnere den, da 0 rowsaffected betyder intet fundet
+      if (result.rowsAffected == 0) {
+          console.dir ("User not found");
+          sql.close();
+          return;
       }
-      if (user.email == result.Email && user.password == result.Password){
-          console.log("User logged in")
-      }else{
-          console.log("Wrong password")
+      //Hvis noget er fundet tjekker vi nu om kodeord og password matcher db info
+      if(result.recordset[0].first_name == email){
+          console.dir("User Found");
+          sql.close();
+          return;
+      }
+      //Error handling
+      } catch(err) {
+          console.log(err);
+          return;
+      }
+  }
+
+//Login funktion gemt i DB Klasse
+
+async loginUser(email, password){
+  try {
+      // make sure that any items are correctly URL encoded in the connection string
+      await sql.connect('Server=cbs1.database.windows.net,1433;Database=First;User Id=anton;Password=NiMiAn@98a;?encrypt=true')
+      console.dir("Connected to SQL Server");
+
+      const result = await sql.query`select * from sales.customers where first_name = ${email}`;
+      //console.dir(result.recordset[0].first_name);
+      //console.dir(result)
+      //Tjekker om der er fundet noget i DB, hvis ikke returnere den, da 0 rowsaffected betyder intet fundet
+      if (result.rowsAffected == 0) {
+          console.dir ("User not found");
+          sql.close();
+          return;
+      }
+
+      //Hvis noget er fundet tjekker vi nu om kodeord og password matcher db info
+      if(result.recordset[0].first_name == email && result.recordset[0].last_name == password){
+          console.dir("User logged in successfully");
+          sql.close();
+          return;
+      }else {
+          console.dir("Email or Password is incorrect");
+          sql.close();
+          return;
+      }
+      //Error handling
+      } catch(err) {
+          console.log(err);
+          return;
       }
   }
 

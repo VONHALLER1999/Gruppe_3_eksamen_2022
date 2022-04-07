@@ -80,3 +80,5 @@ app.post("/signup", async (req, res) => {
     console.log("noget gik galt");
   }
 });
+
+
