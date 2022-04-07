@@ -6,13 +6,13 @@ const sql = require('mssql');
 
 class DB {
 
- async openDatabase() {
-   try {
-    await sql.connect('Server=examcbs.database.windows.net,1433;Database=thegreenpaper;User Id=vilgro;Password=Ve1lpm2b;?encrypt=true')
-  }catch(err) {
-    console.dir(err)
+  async openDatabase() {
+    try {
+     await sql.connect('Server=examcbs.database.windows.net,1433;Database=thegreenpaper;User Id=vilgro;Password=Ve1lpm2b;?encrypt=true')
+    }catch(err) {
+      console.dir(err)
+   }
   }
- }
 
   async createUser(email, password) {
     try {
