@@ -2,72 +2,94 @@
 //Sat op med mssql
 const sql = require('mssql');
 
-async function call(){
-  try {
-      // make sure that any items are correctly URL encoded in the connection string
-      await sql.connect('Server=cbs1.database.windows.net,1433;Database=First;User Id=anton;Password=NiMiAn@98a;?encrypt=true')
-      const result = await sql.query`select Country_id From dbo.Menu`
-      console.dir(result);
-      //console.log(result.rowsAffected == 0);
-      console.log("Connected to SQL Server")
-  } catch (err) {
-      console.log(err);
-  }
-}
-call();
 
-
-const ABSOLUTE_PATH = __dirname + "/../data";
-const USER_FILE = "/users.json";
 
 class DB {
-  constructor() {
-    this.users = this.openFile(USER_FILE);
-  }
-  // CORE 
-  // Save file
-  saveFile(fileName, contentString) {
-    fs.writeFileSync(ABSOLUTE_PATH + fileName, contentString);
+
+  async openDatabase() {
+    try {
+     await sql.connect('Server=examcbs.database.windows.net,1433;Database=thegreenpaper;User Id=vilgro;Password=Ve1lpm2b;?encrypt=true')
+    }catch(err) {
+      console.dir(err)
+   }
   }
 
-  // Open file
-  openDb(email) {
-      const result = await sql.query`select * From User where name = ${email}`
-      return result;
+  async createUser(email, password) {
+    try {
+      const result = await this.findUser(email);
+
+      if (result) {
+        console.dir("User already exists")
+        sql.close();
+      }else{
+        await sql.query`INSERT INTO [User](email,psw) values(${email}, ${password})`
+        console.dir("User was created");
+        sql.close()
+        return;
+        ;
+      }
+    }catch(err) {
+      console.log(err)
+    }
   }
 
   // LOGIN DB 
-  saveUser(user) {
-    this.users.push(user);
-    this.saveFile(USER_FILE, JSON.stringify(this.users));
-  }
+  async findUser(userEmail) {
+    try {
+      // make sure that any items are correctly URL encoded in the connection string
+      await this.openDatabase();
+      console.dir("Connected to SQL Server");
+      const result = await sql.query`select * from [User] where email = ${userEmail}`;
 
-  deleteUser(user) {
-    this.users = this.users.filter((x) => x.email != user.email);
-    this.saveFile(USER_FILE, JSON.stringify(this.users));
-  }
-
-  findUser(email) {
-    const result = await sql.query`select * From User where name = ${email}`
-    if(result.rowsAffected == 0){
-        console.log("User not created");
-    }else{
-        return result;
-        }
-  }
-
-  loginUser(email, password){
-      var user = {
-          email: user.email,
-          password: user.password
+      //Tjekker om der er fundet noget i DB, hvis ikke returnere den, da 0 rowsaffected betyder intet fundet
+      if (result.rowsAffected == 0) {
+          console.dir ("User not found");
+          sql.close();
+          return false;
       }
-      if (user.email == result.Email && user.password == result.Password){
-          console.log("User logged in")
-      }else{
-          console.log("Wrong password")
+      //Hvis noget er fundet tjekker vi nu om kodeord og password matcher db info
+      if(result.recordset[0].email == userEmail){
+          console.dir("User Found");
+          return result;
+      }
+      //Error handling
+      } catch(err) {
+          console.log(err);
+          return;
       }
   }
 
+
+//Login funktion gemt i DB Klasse
+
+async loginUser(email, password){
+  try {
+      //Tjekker om der er fundet noget i DB, hvis ikke returnere den, da 0 rowsaffected betyder intet fundet
+      const result = await this.findUser(email);
+
+      if (!result) {
+          console.dir ("User not found");
+          sql.close();
+          return;
+      }
+      //Hvis noget er fundet tjekker vi nu om kodeord og password matcher db info
+      if(result.recordset[0].email == email && result.recordset[0].psw == password){
+          console.dir("User logged in successfully");
+          //req.session.loggedin = true;
+          sql.close();
+          return;
+      }else {
+          console.dir("Email or Password is incorrect");
+          //sql.close();
+          return;
+      }
+      //Error handling
+      } catch(err) {
+          console.log(err);
+          return;
+      }
+  }
+  
   
 }
 
