@@ -18,7 +18,7 @@ class DB {
     try {
       const result = await this.findUser(email);
 
-      if (result) {
+      if (result == true) {
         await sql.query`INSERT INTO [User](email,psw) values(${email}, ${password})`
         console.dir("User was created");
         //sql.close()
@@ -65,7 +65,6 @@ class DB {
 
 
 //Login funktion gemt i DB Klasse
-
 async loginUser(email, password){
   try {
       //Tjekker om der er fundet noget i DB, hvis ikke returnere den "true"
@@ -74,7 +73,7 @@ async loginUser(email, password){
       if (result == true) {
           console.dir ("User not found");
           sql.close();
-          return false;
+          return true;
       }
       //Hvis noget er fundet tjekker vi nu om kodeord og password matcher db info
       if(result.recordset[0].email == email && result.recordset[0].psw == password){
@@ -93,7 +92,66 @@ async loginUser(email, password){
           return;
       }
   }
+
+
+  async deleteUser(email, password){
+    try {
+        //Tjekker om der er fundet noget i DB, hvis ikke returnere den "true"
+        const result = await this.findUser(email);
   
+        if (result == true) {
+            console.dir ("User not found");
+            sql.close();
+            return true;
+        }
+        //Hvis noget er fundet tjekker vi nu om kodeord og password matcher db info
+        if(result.recordset[0].email == email && result.recordset[0].psw == password){
+            await sql.query`DELETE FROM [User] WHERE email = ${email} AND psw = ${password}`
+            console.dir("User succesfully deleted");
+            //req.session.loggedin = true;
+            sql.close();
+            return true;
+        }else {
+            console.dir("Email or Password is incorrect");
+            //sql.close();
+            return;
+        }
+        //Error handling
+        } catch(err) {
+            console.log(err);
+            return;
+        }
+    }
+
+
+    async updateUser(email, password, newEmail, newPassword){
+      try {
+          //Tjekker om der er fundet noget i DB, hvis ikke returnere den "true"
+          const result = await this.findUser(email);
+    
+          if (result == true) {
+              console.dir ("User not found");
+              sql.close();
+              return true;
+          }
+          //Hvis noget er fundet tjekker vi nu om kodeord og password matcher db info
+          if(result.recordset[0].email == email && result.recordset[0].psw == password){
+              await sql.query`DELETE FROM [User] WHERE email = ${email} AND psw = ${password}`
+              console.dir("User succesfully deleted");
+              //req.session.loggedin = true;
+              sql.close();
+              return true;
+          }else {
+              console.dir("Email or Password is incorrect");
+              //sql.close();
+              return;
+          }
+          //Error handling
+          } catch(err) {
+              console.log(err);
+              return;
+          }
+      }
   
 }
 // exporter DB så fs metoderne kan bruges i andre sammenhæng

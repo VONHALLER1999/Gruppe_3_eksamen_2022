@@ -34,12 +34,20 @@ app.get('/', function(req, res) {
   }
 });
 
+app.get('/deleteuser', function(req, res) {
+    res.sendFile(__dirname + '/public/deleteuser.html');
+});
+
+app.get('/updateuseruser', function(req, res) {
+  res.sendFile(__dirname + '/public/updateuser.html');
+});
+
 
 //when signup on the signup page is clicked on the client side the server will receive the data from the client and save it to the database
 app.post("/signup", async (req, res) => {
  try {
       const result = await db.createUser(req.body.email, req.body.password)
-  if (result) {
+  if (result == true) {
     console.log("User blev oprettet")
     res.sendFile("/eksamen/public/login.html")
   } else {
@@ -57,13 +65,44 @@ app.post("/login", async (req, res) => {
   try {
       const result = await db.loginUser(req.body.email, req.body.password)
    if (result == true) {
-     console.log("User login succes")
-     res.sendFile("/eksamen/public/index.html")
-   } else {
      console.log("Email eller kodeord er forkert");
      res.send("Error");
+   } else {
+     console.log("User login succes")
+     res.sendFile("/eksamen/public/index.html")
    }
   }catch (err){
    console.log(err)
   }
  });
+ 
+ app.post("/deleteuser", async (req, res) => {
+  try {
+      const result = await db.deleteUser(req.body.email, req.body.password)
+   if (result == true) {
+     console.log("Email eller kodeord er forkert");
+     res.send("Error");
+   } else {
+     console.log("User succesfully deleted")
+     res.sendFile("/eksamen/public/index.html")
+   }
+  }catch (err){
+   console.log(err)
+  }
+ });
+
+ app.post("/updateuser", async (req, res) => {
+  try {
+      const result = await db.deleteUser(req.body.email, req.body.password)
+   if (result == true) {
+     console.log("Email eller kodeord er forkert");
+     res.send("Error");
+   } else {
+     console.log("User succesfully deleted")
+     res.sendFile("/eksamen/public/index.html")
+   }
+  }catch (err){
+   console.log(err)
+  }
+ });
+
