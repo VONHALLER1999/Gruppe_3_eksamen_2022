@@ -26,7 +26,8 @@ app.use(session({
 }));
 
 
-//gå til login.html før index.html, såfremt der ikke er logged ind på en bruger                     
+//gå til login.html før index.html, såfremt der ikke er logged ind på en bruger  
+//MANGLER SESSION UDVIKLING                   
 app.get('/', function(req, res) {
   if (req.session.loggedIn) {
     res.sendFile(__dirname + '/public/index.html');
@@ -35,27 +36,21 @@ app.get('/', function(req, res) {
   }
 });
 
-app.get('/deleteuser', function(req, res) {
-    res.sendFile(__dirname + '/public/deleteuser.html');
-});
-
-app.get('/updateuseruser', function(req, res) {
-  res.sendFile(__dirname + '/public/updateuser.html');
-});
-
-//Sender JSON med alle opslag til endpointet hvor den bliver fetched i opslag.js og herefter sat på index.html
-app.get("/allposts", async (req, res) => {
+//login endpoint
+app.post("/login", async (req, res) => {
   try {
-    console.log("button for all posts clicked");
-    const result = await db1.allPosts();
-    console.log(result);
-    res.send(result);
+    const result = await db.loginUser(req.body.email, req.body.password);
+    if (!result) {
+      console.log("Email eller kodeord er forkert");
+      res.send("Error");
+    } else {
+      console.log("User login succes");
+      res.sendFile(__dirname + "/public/index.html");
+    }
   } catch (err) {
     console.log(err);
   }
 });
-
-
 
 //when signup on the signup page is clicked on the client side the server will receive the data from the client and save it to the database
 app.post("/signup", async (req, res) => {
@@ -73,22 +68,27 @@ app.post("/signup", async (req, res) => {
  }
 });
 
-app.post("/login", async (req, res) => {
+app.get('/deleteuser', function(req, res) {
+    res.sendFile(__dirname + '/public/deleteuser.html');
+});
+
+app.get('/updateuser', function(req, res) {
+  res.sendFile(__dirname + '/public/updateuser.html');
+});
+
+//Sender JSON med alle opslag til endpointet hvor den bliver fetched i opslag.js og herefter sat på index.html
+app.get("/allposts", async (req, res) => {
   try {
-      const result = await db.loginUser(req.body.email, req.body.password)
-   if (result == true) {
-     console.log("Email eller kodeord er forkert");
-     res.send("Error");
-   } else {
-     console.log("User login succes")
-     res.sendFile("/eksamen/public/index.html")
-   }
-  }catch (err){
-   console.log(err)
+    console.log("button for all posts clicked");
+    const result = await db1.allPosts();
+    console.log(result);
+    res.send(result);
+  } catch (err) {
+    console.log(err);
   }
- });
- 
- app.post("/deleteuser", async (req, res) => {
+});
+
+app.post("/deleteuser", async (req, res) => {
   try {
       const result = await db.deleteUser(req.body.email, req.body.password)
    if (result == true) {
@@ -103,15 +103,16 @@ app.post("/login", async (req, res) => {
   }
  });
 
- app.post("/updateuser", async (req, res) => {
+app.post("/updateuser", async (req, res) => {
   try {
-      const result = await db.deleteUser(req.body.email, req.body.password)
-   if (result == true) {
+      const result = await db.updateUser(req.body.email, req.body.password);
+      console.log()
+   if (result) {
      console.log("Email eller kodeord er forkert");
      res.send("Error");
    } else {
-     console.log("User succesfully deleted")
-     res.sendFile("/eksamen/public/index.html")
+     console.log("User succesfully updated")
+     res.sendFile(__dirname + "/public/index.html");
    }
   }catch (err){
    console.log(err)
