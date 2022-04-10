@@ -13,12 +13,12 @@ class DB1 {
   }
 
   // LAV POST
-  async createPost(post_id, user_id, price, description, category_id, created_at, location_id, picture) {
+  async createPost(user_id, price, description, category_id, location_id, picture) {
     try {
         await this.openDatabase();
         //await sql.query`SET IDENTITY_INSERT post ON`
         //Indsætter ikke post_id i opslaget
-        const result = await sql.query`SET IDENTITY_INSERT post ON INSERT INTO post (post_id, user_id, price, description, category_id, created_at, location_id, picture) values(${post_id}, ${user_id}, ${price}, ${description}, ${category_id}, ${created_at}, ${location_id}, ${picture})`
+        const result = await sql.query`SET IDENTITY_INSERT post ON INSERT INTO post (user_id, price, description, category_id, location_id, picture) values( ${user_id}, ${price}, ${description}, ${category_id}, ${location_id}, ${picture})`
         console.dir("Post succesfully created");
         
         //return false;
@@ -86,21 +86,24 @@ class DB1 {
       }
   }
 
-  //SE ALLE OPSLAG
+  //SE ALLE OPSLAG 
+  //Indeholder både location_id og category_id som er foreign keys og sorterer efter guld status 
   async allPosts(){
       try {
           await this.openDatabase();
           console.dir("Connected to SQL Server");
-          const result = await sql.query`select * from post`;
-          console.dir(result);
-          //return result;
+          const result =
+            await sql.query`select b.email, c.postalcode, d.category_name, a.created_at, a.price, a.description, a.picture, b.status_id from post as a join [User] as b on a.user_id = b.user_id join location as c on c.location_id = a.location_id join Category as d on d.category_Id = a.category_Id join User_status as e on b.status_id = e.status_id order by b.status_id desc`;
+          console.log("All posts have been found");
+          console.log(result);
+          return result;
       } catch (err) {
           console.dir(err);
           return;          
       }
   }
 
-    //SE ALLE OPSLAG
+    //SE ALLE OPSLAG 
     async postStats(){
         try {
             await this.openDatabase();

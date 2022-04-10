@@ -7,6 +7,7 @@ const path = require("path");
 const session = require("express-session");
 //const session = require('express-session'); 
 const db = require("./helpers/db.js");
+const db1 = require("./helpers/db1.js");
 
 //makes sure that the server is up and running
 app.listen(PORT, () => console.log(`Server lytter på port ${PORT}`));
@@ -42,14 +43,27 @@ app.get('/updateuseruser', function(req, res) {
   res.sendFile(__dirname + '/public/updateuser.html');
 });
 
+//Sender JSON med alle opslag til endpointet hvor den bliver fetched i opslag.js og herefter sat på index.html
+app.get("/allposts", async (req, res) => {
+  try {
+    console.log("button for all posts clicked");
+    const result = await db1.allPosts();
+    console.log(result);
+    res.send(result);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
 
 //when signup on the signup page is clicked on the client side the server will receive the data from the client and save it to the database
 app.post("/signup", async (req, res) => {
  try {
       const result = await db.createUser(req.body.email, req.body.password)
-  if (result == true) {
+  if (result) {
+    res.sendFile(__dirname + '/public/login.html');
     console.log("User blev oprettet")
-    res.sendFile("/eksamen/public/login.html")
   } else {
     console.log("User findes allerede");
   }
@@ -58,8 +72,6 @@ app.post("/signup", async (req, res) => {
   console.log(err)
  }
 });
-
-
 
 app.post("/login", async (req, res) => {
   try {

@@ -17,9 +17,9 @@ class DB {
   async createUser(email, password) {
     try {
       const result = await this.findUser(email);
-
+      //brugeren for får en email og password, samt status koden 0 som betyder at brugeren er ikke guld status. 
       if (result == true) {
-        await sql.query`INSERT INTO [User](email,psw) values(${email}, ${password})`
+        await sql.query`INSERT INTO [User](email,psw,status_id) values(${email}, ${password}, 0)`
         console.dir("User was created");
         //sql.close()
         return true;

@@ -22,7 +22,7 @@ const db1 = require('./helpers/db1.js');
 //db1.createPost("7", "7", "7", "test1", "2", "2022-04-08T00:00:00", "1", "test1")
 
 
-//db1.allPosts();
+db1.allPosts();
 
 
 //db1.deletePost("4");
