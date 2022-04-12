@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
 
           cell1.innerHTML = result.recordset[i].email;
-          cell2.innerHTML = result.recordset[i].postal;
+          cell2.innerHTML = result.recordset[i].postalcode;
           cell3.innerHTML = result.recordset[i].category_name;
           cell4.innerHTML = result.recordset[i].created_at;
           cell5.innerHTML = result.recordset[i].price;

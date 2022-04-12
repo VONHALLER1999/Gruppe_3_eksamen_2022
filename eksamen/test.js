@@ -15,7 +15,7 @@ const db1 = require('./helpers/db1.js');
 //db.deleteUser("test@1", "test")
 
 
-db.updateUser("b@b", "hej", "test");
+//db.updateUser("b@b", "hej", "test");
 
 //brug ISO-8601 date format til at indsætte med opslag
 //YYYY-MM-DDTHH:MM:SS
@@ -30,4 +30,4 @@ db.updateUser("b@b", "hej", "test");
 
 //db1.updatePost("3", "6", "gg", "2", "test");
 
-//db1.postStats()
+db1.postStats()
