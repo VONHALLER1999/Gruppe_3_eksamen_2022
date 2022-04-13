@@ -18,6 +18,8 @@ app.use(bodyParser.urlencoded({ extended: false }));
 //sørger for at 
 app.use(express.static(path.join(__dirname, "./public")));
 
+app.use(express.json());
+
 //session coockie                                  
 app.use(session({
 	secret: 'secret',
@@ -25,14 +27,24 @@ app.use(session({
 	saveUninitialized: true
 }));
 
+//endpoint med loggedin status som bruges i scripts til HTML siderne til at bestemme om brugeren er logged in
+app.get("/loggedstatus", async (req, res) => {
+  if (req.session.loggedIn) {
+    res.send(true);
+  } else {
+    res.send(false);
+  }
+});
 
 //gå til login.html før index.html, såfremt der ikke er logged ind på en bruger  
 //MANGLER SESSION UDVIKLING                   
 app.get('/', function(req, res) {
   if (req.session.loggedIn) {
     res.sendFile(__dirname + '/public/index.html');
+    console.log("Already logged in");
   } else {
     res.sendFile(__dirname + '/public/login.html');
+    console.log("Not logged in");
   }
 });
 
@@ -42,14 +54,18 @@ app.post("/login", async (req, res) => {
     const result = await db.loginUser(req.body.email, req.body.password);
     if (!result) {
       console.log("Email eller kodeord er forkert");
-      res.send("Error");
+      res.send(result);
     } else {
       console.log("User login succes");
-      res.sendFile(__dirname + "/public/index.html");
+      req.session.username = req.body.email;
+      req.session.loggedIn = true;
+      console.log(req.session.loggedIn);
+      res.send(result);
     }
   } catch (err) {
     console.log(err);
   }
+
 });
 
 //when signup on the signup page is clicked on the client side the server will receive the data from the client and save it to the database
@@ -81,7 +97,6 @@ app.get("/allposts", async (req, res) => {
   try {
     console.log("button for all posts clicked");
     const result = await db1.allPosts();
-    console.log(result);
     res.send(result);
   } catch (err) {
     console.log(err);

@@ -84,7 +84,7 @@ class DB {
 
           //Videre udvikling her så man får en fejlbesked i frontend
 
-          return;
+          return false;
       }
       //Error handling
       } catch(err) {
