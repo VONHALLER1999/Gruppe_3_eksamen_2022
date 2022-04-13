@@ -75,6 +75,8 @@ app.post("/signup", async (req, res) => {
   if (result) {
     res.sendFile(__dirname + '/public/login.html');
     console.log("User blev oprettet")
+    req.session.username = email; 
+    req.session.loggedin = true; 
   } else {
     console.log("User findes allerede");
   }
@@ -111,7 +113,10 @@ app.post("/deleteuser", async (req, res) => {
      res.send("Error");
    } else {
      console.log("User succesfully deleted")
-     res.sendFile("/eksamen/public/index.html")
+     req.session.loggedin = false;
+     req.session.username = null; 
+     res.status(200);
+     res.redirect("eksamen/public/index.html");
    }
   }catch (err){
    console.log(err)
@@ -133,4 +138,12 @@ app.post("/updateuser", async (req, res) => {
    console.log(err)
   }
  });
+
+app.get("/logoutUser", (req, res) => {
+  req.session.loggedin = false;
+  req.session.username = null; 
+  res.status(200);
+  res.redirect("eksamen/public/index.html");
+});
+
 

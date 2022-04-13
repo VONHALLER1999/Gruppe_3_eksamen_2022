@@ -146,7 +146,6 @@ class DB1 {
 
                     
 */
-  
 
             //return result;
         } catch (err) {
@@ -156,7 +155,6 @@ class DB1 {
     }
 
 
-    async postPeruser(arr){}
   
 }
 // exporter DB så fs metoderne kan bruges i andre sammenhæng
