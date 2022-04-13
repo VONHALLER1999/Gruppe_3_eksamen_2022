@@ -141,10 +141,11 @@ class DB {
             sql.close();
             return true;
           } else {
+            console.dir(result.recordset[0].psw + password + newPassword);
             //Brugeren blev fundet, men det er det forkerte kodeord
             console.dir("Email or Password is incorrect");
             //sql.close();
-            return;
+            return false;
           }
           //Error handling
           } catch(err) {

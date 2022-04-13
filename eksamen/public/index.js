@@ -41,4 +41,30 @@ document.addEventListener("DOMContentLoaded", (event) => {
       }
     }
   })
+  //tjekker om brugeren er logget ind ved loggedstatus endpoint. Hvis true fetcher den på 
+  document.getElementById("logout").addEventListener("click", (event) => {
+    event.preventDefault();
+    fetch("http://localhost:1010/loggedstatus")
+      .then((res) => res.json())
+      .then((data) => {
+        if (data) {
+          console.log("fetch");
+          fetch("http://localhost:1010/logout")
+            .then((res) => res.json())
+            .then((data) => {
+              console.log(data);
+              window.alert("Du er blevet logget ud");
+            })
+            .catch(function (err) {
+              console.log(err);
+            });
+        } else {
+          window.alert("Du er ikke logget ind");
+        }
+      })
+      .catch(() => {
+        window.alert("Der skete en fejl");
+      });
+
+  })
 })

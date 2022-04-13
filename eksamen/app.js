@@ -73,10 +73,8 @@ app.post("/signup", async (req, res) => {
  try {
       const result = await db.createUser(req.body.email, req.body.password)
   if (result) {
-    res.sendFile(__dirname + '/public/login.html');
-    console.log("User blev oprettet")
-    req.session.username = email; 
-    req.session.loggedin = true; 
+    console.log("User blev oprettet") 
+    res.sendFile(__dirname + "/public/login.html");
   } else {
     console.log("User findes allerede");
   }
@@ -125,11 +123,14 @@ app.post("/deleteuser", async (req, res) => {
 
 app.post("/updateuser", async (req, res) => {
   try {
-      const result = await db.updateUser(req.body.email, req.body.password);
-      console.log()
-   if (result) {
+      const result = await db.updateUser(
+        req.body.email,
+        req.body.password,
+        req.body.newPassword
+      );
+   if (!result) {
      console.log("Email eller kodeord er forkert");
-     res.send("Error");
+     res.send(false);
    } else {
      console.log("User succesfully updated")
      res.sendFile(__dirname + "/public/index.html");
@@ -139,11 +140,15 @@ app.post("/updateuser", async (req, res) => {
   }
  });
 
-app.get("/logoutUser", (req, res) => {
-  req.session.loggedin = false;
-  req.session.username = null; 
-  res.status(200);
-  res.redirect("eksamen/public/index.html");
+app.get("/logout", (req, res) => {
+  try {
+    req.session.loggedIn = false;
+    req.session.username = null;
+    console.log("User logged out")
+    res.send(true)
+  } catch (err) {
+    console.log(err);
+  }
 });
 
 
