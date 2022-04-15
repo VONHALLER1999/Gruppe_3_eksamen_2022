@@ -93,27 +93,21 @@ class DB {
       }
   }
 
-  async deleteUser(email, password){
+  async deleteUser(email){
     try {
-        //Tjekker om der er fundet noget i DB, hvis ikke returnere den "true"
+        //Tjekker om der er fundet noget i DB, hvis ikke returnere den "false"
         const result = await this.findUser(email);
   
         if (!result) {
             console.dir ("User not found");
             sql.close();
             return false;
-        }
-        //Hvis noget er fundet tjekker vi nu om kodeord og password matcher db info
-        if(result.recordset[0].email == email && result.recordset[0].psw == password){
-            await sql.query`DELETE FROM [User] WHERE email = ${email} AND psw = ${password}`
-            console.dir("User succesfully deleted");
-            //req.session.loggedin = true;
-            sql.close();
-            return true;
-        }else {
-            console.dir("Email or Password is incorrect");
-            //sql.close();
-            return;
+        } else {
+          await sql.query`DELETE FROM [User] WHERE email = ${email}`;
+          console.dir("User succesfully deleted");
+          //req.session.loggedin = true;
+          sql.close();
+          return true;
         }
         //Error handling
         } catch(err) {
@@ -121,7 +115,6 @@ class DB {
             return;
         }
   }
-
 
   async updateUser(email, password, newPassword){
       try {

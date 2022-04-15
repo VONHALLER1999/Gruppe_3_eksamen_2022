@@ -103,23 +103,18 @@ app.get("/allposts", async (req, res) => {
   }
 });
 
-app.post("/deleteuser", async (req, res) => {
+app.get("/deletedeuser", async (req, res) => {
   try {
-      const result = await db.deleteUser(req.body.email, req.body.password)
-   if (result == true) {
-     console.log("Email eller kodeord er forkert");
-     res.send("Error");
-   } else {
+    console.log(req.session.username);
+    await db.deleteUser(req.session.username)
      console.log("User succesfully deleted")
-     req.session.loggedin = false;
+     req.session.loggedIn = false;
      req.session.username = null; 
-     res.status(200);
-     res.redirect("eksamen/public/index.html");
-   }
-  }catch (err){
-   console.log(err)
+    res.send(true);
+  } catch (err) {
+    console.log(err);
   }
- });
+});
 
 app.post("/updateuser", async (req, res) => {
   try {
