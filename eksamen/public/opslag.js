@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         console.log(err);
       });
 
+     
       function createTable(result) {
         for (let i=0; i < result.recordset.length; i++) {
           var table = document.getElementById("table");

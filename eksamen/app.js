@@ -88,6 +88,15 @@ app.get("/allposts", async (req, res) => {
   }
 });
 
+
+
+
+
+
+
+
+
+
 app.post("/deleteuser", async (req, res) => {
   try {
       const result = await db.deleteUser(req.body.email, req.body.password)
