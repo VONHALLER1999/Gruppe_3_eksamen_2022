@@ -67,4 +67,23 @@ document.addEventListener("DOMContentLoaded", (event) => {
       });
 
   })
+
+  //tjekker om brugeren er logget ind, hvis ikke fjernes knapperne logout og rediger din bruger. Hvis Brugeren derimod er logget ind fjernes login og signup knappen
+     fetch("http://localhost:1010/loggedstatus")
+       .then((res) => res.json())
+       .then((data) => {
+         if (!data) {
+           let elem1 = document.getElementById("updateUser")
+           let elem2 = document.getElementById("logout")
+           elem1.remove();
+           elem2.remove();
+         } else {
+          let elem1 = document.getElementById("login");
+          let elem2 = document.getElementById("signup");    
+          elem1.remove();
+          elem2.remove();      } 
+       })
+       .catch(() => {
+         window.alert("Der skete en fejl");
+       });
 })
