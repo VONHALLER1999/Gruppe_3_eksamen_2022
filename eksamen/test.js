@@ -1,5 +1,5 @@
 const db = require('./helpers/db.js');
-const db1 = require('./helpers/db1.js');
+const postDB = require('./helpers/db1.js');
 
 
 
@@ -30,4 +30,4 @@ const db1 = require('./helpers/db1.js');
 
 //db1.updatePost("3", "6", "gg", "2", "test");
 
-db1.postStats()
+postDB.numberOfPosts()
