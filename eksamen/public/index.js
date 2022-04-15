@@ -86,4 +86,22 @@ document.addEventListener("DOMContentLoaded", (event) => {
        .catch(() => {
          window.alert("Der skete en fejl");
        });
+
+        document.getElementById("admin").addEventListener("click", (event) => {
+         event.preventDefault();
+         fetch("http://localhost:1010/isadmin")
+           .then((res) => res.json())
+           .then((data) => {
+             if (data) {
+              window.location.href = "/admin.html";
+             } else {
+               window.alert("Du er ikke admin");
+             }
+           })
+           .catch(() => {
+             window.alert("Der skete en fejl");
+           });
+       });
+
 })
+

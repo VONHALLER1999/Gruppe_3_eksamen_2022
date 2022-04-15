@@ -88,6 +88,20 @@ app.get('/deleteuser', function(req, res) {
     res.sendFile(__dirname + '/public/deleteuser.html');
 });
 
+//Admin endpoint der kun giver adgang til /admin hvis brugeren er en admin
+app.get("/admin", async (req, res) => {
+  try {
+    const result = await db.isAdmin(req.session.username);
+    if (result) {
+      res.sendFile(__dirname + "/public/admin.html");
+    } else {
+      res.sendFile(__dirname + "/public/index.html");
+    }
+  } catch {
+
+  }
+});
+
 app.get('/updateuser', function(req, res) {
   res.sendFile(__dirname + '/public/updateuser.html');
 });
@@ -146,4 +160,33 @@ app.get("/logout", (req, res) => {
   }
 });
 
+app.get("/isadmin", async (req, res) => {
+  const result = await db.isAdmin(req.session.username);
+  if (result) {
+    res.send(true);
+  } else if(!result) {
+    res.send(false);
+  } else {
+    console.log("something went wrong")
+  }
+});
 
+app.get("/numberofposts", async (req, res) => {
+  try {
+    const result = await db1.numberOfPosts();
+    res.send(result);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.get("/postamountanduser", async (req, res) => {
+  try {
+    const result = await db1.postAmountWithUser();
+    let arr = Object.values(result.recordsets[0][0]);
+    console.log(arr[1])
+    res.send(result);
+  } catch (err) {
+    console.log(err);
+  }
+});
