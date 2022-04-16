@@ -18,10 +18,21 @@
     <button id="logout">logout</button>
     <button id="signup"onclick="location.href='./signup.html'">Signup</button>
     <button id="makepost"onclick="location.href='./opslag.html'">Lav Opslag</button>
-    <button id="updateUser"onclick="location.href='./updateuser.html'">opdaterer din bruger</button>
+    <button id="updateUser"onclick="location.href='./updateuser.html'">brugerprofil</button>
     <button id="admin">Admin site</button>
-    <form action="/allpost" method="post">
-    <input id="postBtn" type="submit" name="postBtn" value="All Posts" />
+    
+    <form id="kategori">
+        <label>Søg på en kategori</label>
+        <br /><br />
+		<select name="kategori">
+          <option value="stole">Stole</option>
+          <option value="bord">Bord</option>
+          <option value="bil">Bil</option>
+        </select>
+		<input id="categoryBtn" type="submit" value="Submit" />
+    </form>
+
+   
     <table id="table">
         <tr>
             <th>Email</th>

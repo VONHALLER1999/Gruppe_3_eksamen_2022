@@ -130,8 +130,6 @@ class DB {
         //tjekker om den fundne bruger har admin rettigheder gennem deres status id i databasen
       } else if (result.recordset[0].status_id === 1) {
         console.dir("User is admin");
-        //req.session.loggedin = true;
-        sql.close();
         return true;
       } else {
         console.dir("User is not admin")
@@ -143,6 +141,37 @@ class DB {
       return;
     }
   }
+
+  async updateUser(email, password, newPassword){
+    try {
+          //Tjekker om der er fundet noget i DB, hvis ikke returnere den "false"
+          const result = await this.findUser(email);
+          console.log(result)
+          if (!result) {
+              console.dir ("User not found");
+              return false;
+          } else if (result.recordset[0].email === email && result.recordset[0].psw === password) {
+            
+            await sql.query`update [User]
+              set psw = ${newPassword}
+              where email = ${email}`;
+            console.dir("User succesfully updated");
+            //req.session.loggedin = true;
+       
+            return true;
+          } else {
+            //Brugeren blev fundet, men det er det forkerte kodeord
+            console.dir("Password is incorrect");
+           
+            return false;
+          }
+          //Error handling
+          } catch(err) {
+              console.log(err);
+              return;
+          }
+        }
+
 }
 // exporter DB så metoderne kan bruges i andre sammenhæng
 module.exports = new DB();

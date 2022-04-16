@@ -8,6 +8,7 @@ const session = require("express-session");
 
 const db = require("./helpers/db.js");
 const db1 = require("./helpers/db1.js");
+const { UserOwnsPost, deleteUserPost } = require("./helpers/db1.js");
 
 //makes sure that the server is up and running
 app.listen(PORT, () => console.log(`Server lytter på port ${PORT}`));
@@ -110,8 +111,18 @@ app.get('/updateuser', function(req, res) {
 //Sender JSON med alle opslag til endpointet hvor den bliver fetched i opslag.js og herefter sat på index.html
 app.get("/allposts", async (req, res) => {
   try {
-    console.log("button for all posts clicked");
     const result = await db1.allPosts();
+    res.send(result);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
+app.post("/postcategory", async (req, res) => {
+  try {
+    console.log("button for posts with category: " + req.body.category + " clicked");
+    const result = await db1.PostByCategory(req.body.kategori);
     res.send(result);
   } catch (err) {
     console.log(err);
@@ -131,6 +142,7 @@ app.get("/deletedeuser", async (req, res) => {
   }
 });
 
+//MANGLER FUNKTION HVIS KODEORD ER FORKERT
 app.post("/updateuser", async (req, res) => {
   try {
       const result = await db.updateUser(
@@ -139,7 +151,7 @@ app.post("/updateuser", async (req, res) => {
         req.body.newPassword
       );
    if (!result) {
-     console.log("Email eller kodeord er forkert");
+     console.log("kodeord er forkert");
      res.send(false);
    } else {
      console.log("User succesfully updated")
@@ -204,6 +216,7 @@ app.get("/opslag", async (req, res) => {
   }
 
 })
+
 app.post("/opretopslag", async (req, res) => {
   console.log("trying to go to opslag")
   try {
@@ -220,3 +233,34 @@ app.post("/opretopslag", async (req, res) => {
     console.log(err)
   }
 })
+
+//Sender JSON med alle opslag til endpointet hvor den bliver fetched i opslag.js og herefter sat på index.html
+app.get("/allusersposts", async (req, res) => {
+  try {
+    console.log("Showing the users post");
+    const result = await db1.allUsersPosts(req.session.username);
+    res.send(result);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.post("/deletepost", async (req, res) => {
+  try {
+    console.log("clicked deleted on post_id: " + req.body.post_id);
+   
+    const result = await db1.deletePost(req.body.post_id, req.session.username)
+    console.log(result)
+    if (result) {
+      res.send(result);
+    } else {
+      console.log("something went wrong, User does not own post")
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+
+      
+      

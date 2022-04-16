@@ -1,0 +1,39 @@
+<table id="tblCustomers" border="0" cellpadding="0" cellspacing="0">
+    <tbody>
+        <tr>
+            <th style="width: 90px">Customer Id</th>
+            <th style="width: 120px">Name</th>
+            <th style="width: 90px">Country</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>John Hammond</td>
+            <td>United States</td>
+        </tr>
+        <tr>
+            <td>2</td>
+            <td>Mudassar Khan</td>
+            <td>India</td>
+        </tr>
+        <tr>
+            <td>3</td>
+            <td>Suzanne Mathews</td>
+            <td>France</td>
+        </tr>
+        <tr>
+            <td>4</td>
+            <td>Robert Schidner</td>
+            <td>Russia</td>
+        </tr>
+    </tbody>
+</table>
+<hr />
+<input type="button" id="btnDelete" value="Delete Rows" onclick="DeleteRows()" />
+<script type="text/javascript">
+    function DeleteRows() {
+        var rowCount = tblCustomers.rows.length;
+        for (var i = rowCount - 1; i > 0; i--) {
+            tblCustomers.deleteRow(i);
+        }
+    }
+</script>
