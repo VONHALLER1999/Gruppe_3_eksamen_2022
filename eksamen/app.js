@@ -5,7 +5,7 @@ const app = express();
 const bodyParser = require("body-parser") 
 const path = require("path");
 const session = require("express-session");
-//const session = require('express-session'); 
+
 const db = require("./helpers/db.js");
 const db1 = require("./helpers/db1.js");
 
@@ -51,6 +51,7 @@ app.get('/', function(req, res) {
 //login endpoint
 app.post("/login", async (req, res) => {
   try {
+    console.log(req.body.email)
     const result = await db.loginUser(req.body.email, req.body.password);
     if (!result) {
       console.log("Email eller kodeord er forkert");
@@ -190,3 +191,32 @@ app.get("/postamountanduser", async (req, res) => {
     console.log(err);
   }
 });
+
+app.get("/opslag", async (req, res) => {
+  try {
+    if(req.loggedIn) {
+      res.sendFile(__dirname + "/public/opslag.html");
+    } else {
+      res.sendFile(__dirname + "/public/index.html");
+    }
+  }catch (err) {
+    console.log(err)
+  }
+
+})
+app.post("/opretopslag", async (req, res) => {
+  console.log("trying to go to opslag")
+  try {
+    db1.createPost(
+      req.session.username,
+      req.body.pris,
+      req.body.descripton,
+      req.body.kategori,
+      req.body.postalcode,
+      "testdata"
+    );
+   
+  } catch (err) {
+    console.log(err)
+  }
+})

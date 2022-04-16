@@ -14,26 +14,49 @@ class postDB {
   }
 
   // LAV POST
-  async createPost(
-    user_id,
-    price,
-    description,
-    category_id,
-    location_id,
-    picture
+  //MANGLER FUNKTIONALITET TIL BILLEDE
+  async createPost(username,price,description,category,postalcode,picture
   ) {
     try {
       await this.openDatabase();
-      //await sql.query`SET IDENTITY_INSERT post ON`
-      //Indsætter ikke post_id i opslaget
-      const result =
-        await sql.query`SET IDENTITY_INSERT post ON INSERT INTO post (user_id, price, description, category_id, location_id, picture) values( ${user_id}, ${price}, ${description}, ${category_id}, ${location_id}, ${picture})`;
+      
+      //henter brugeren user_id ved at finde det user_id der matcher med hans email gennem sgl
+      const userQuery = await sql.query`select user_id from [User]
+        where email= ${username}`;
+      const user_id = userQuery.recordset[0].user_id;
+
+      //henter kategoriens id ved at finde det id der matcher med kategorinavnet gennem sgl
+      const categoryquery =
+        await sql.query`SELECT category_id FROM Category WHERE category_name=${category}`;
+      const category_id = categoryquery.recordset[0].category_id;
+
+      //parser input price til et int, så det kan bruges til at lave et opslag
+      let priceInt = Number(price);
+
+      //parser input postalcode til et int, så det kan bruges i en SQL query
+      let postalcodeInt = Number(postalcode)
+
+      //tjekker om postalcode eksiterer i databasen, hvis ikke laves et ny postalcode med ID i databasen
+      var locationQuery =
+        await sql.query`select location_id from location where postalcode=${postalcodeInt}`;
+      if (locationQuery.rowsAffected == 0) {
+        let newLocationQuery = await sql.query`INSERT INTO location (postalcode) values (${postalcodeInt})`;
+        console.log(newLocationQuery);
+        //henter det nye ID som matcher postnummeret fra databasen
+        locationQuery =
+          await sql.query`select location_id from location where postalcode=${postalcodeInt}`;
+      }
+
+      //trækker location_id værdien ud af overstående SQL query
+      let location_id = locationQuery.recordset[0].location_id;
+      
+      //laver en ny annonce med alle de nødvendige værdier
+      const newPost =
+        await sql.query`insert into post (user_id, price, description, category_Id, location_id, picture) 
+      VALUES (${user_id}, ${priceInt}, ${description}, ${category_id}, ${location_id}, ${picture})`;
       console.dir("Post succesfully created");
 
-      //return false;
-      console.dir(result);
-      sql.close();
-      return;
+      return newPost;
     } catch (err) {
       console.log(err);
     }

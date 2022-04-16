@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", (event) => {
 
-  document.getElementById("postBtn").addEventListener("click", (event) => {
+ 
     event.preventDefault();
     console.log("clicked post");
     fetch("http://localhost:1010/allposts")
@@ -40,7 +40,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
           table.appendChild(row);
       }
     }
-  })
+  
   //tjekker om brugeren er logget ind ved loggedstatus endpoint. Hvis true fetcher den på 
   document.getElementById("logout").addEventListener("click", (event) => {
     event.preventDefault();
@@ -54,12 +54,15 @@ document.addEventListener("DOMContentLoaded", (event) => {
             .then((data) => {
               console.log(data);
               window.alert("Du er blevet logget ud");
+              location.reload();
+
             })
             .catch(function (err) {
               console.log(err);
             });
         } else {
           window.alert("Du er ikke logget ind");
+          location.reload();
         }
       })
       .catch(() => {

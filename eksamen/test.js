@@ -1,3 +1,4 @@
+const { SSL_OP_NO_TLSv1_1 } = require('constants');
 const db = require('./helpers/db.js');
 const postDB = require('./helpers/db1.js');
 
@@ -30,4 +31,7 @@ const postDB = require('./helpers/db1.js');
 
 //db1.updatePost("3", "6", "gg", "2", "test");
 
-postDB.numberOfPosts()
+//postDB.numberOfPosts()
+let username = 'test@1'
+
+postDB.createPost(username, 100,'beskrivelse', 'stole', 2020,'billede her' )

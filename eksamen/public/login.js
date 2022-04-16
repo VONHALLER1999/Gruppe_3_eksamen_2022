@@ -45,7 +45,6 @@ console.log(data)
           if (!result) {
               window.alert("forkert data");
           } else {
-                window.alert("succes")
                 window.location.href = "/index.html";
           }
         } 
