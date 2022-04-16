@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   document.getElementById("delete").addEventListener("click", (event) => {
     event.preventDefault();
     console.log("clicked delete");
-    if (window.confirm("Er du sikker på at du vil slette din bruger?")) {
+    if (window.confirm("Er du sikker på at du vil slette din bruger? Du sletter også alle dine annoncer")) {
          fetch("http://localhost:1010/deletedeuser")
            .then((res) => res.json())
            .then(function (result) {

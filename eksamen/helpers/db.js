@@ -105,13 +105,14 @@ class DB {
 
       if (!result) {
         console.dir("User not found");
-        sql.close();
         return false;
       } else {
+        await sql.query`delete post from post as a
+        join [User] as b
+        on a.user_id = b.user_id
+        where b.email = ${email}`;
         await sql.query`DELETE FROM [User] WHERE email = ${email}`;
         console.dir("User succesfully deleted");
-        //req.session.loggedin = true;
-        sql.close();
         return true;
       }
       //Error handling
