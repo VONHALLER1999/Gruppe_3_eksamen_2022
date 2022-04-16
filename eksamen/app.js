@@ -29,7 +29,7 @@ app.use(session({
 
 //endpoint med loggedin status som bruges i scripts til HTML siderne til at bestemme om brugeren er logged in
 app.get("/loggedstatus", async (req, res) => {
-  if (req.session.loggedIn || db.isAdmin(req.session.username)){   //Giver admin ret til at opdatere brugere, krav 13. Fucker mulighvis med krav 14
+  if (req.session.loggedIn) {   
     res.send(true);
   } else {
     res.send(false);
