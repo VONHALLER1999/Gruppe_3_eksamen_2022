@@ -98,8 +98,7 @@ class postDB {
       return;
     }
   }
-
-
+  
   //OPDATER POST
   //Virker ikke
   //BUG - UPDATE SQL QUERY virker åbenbart ikke ordentlig, kan godt opdatere en værdi, men ikke flere på en gang
