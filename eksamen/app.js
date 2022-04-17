@@ -211,8 +211,10 @@ app.get("/logout", (req, res) => {
     req.session.username = null;
     console.log("User logged out")
     res.send(true)
+    res.status(200);
   } catch (err) {
     console.log(err);
+    res.status(400)
   }
 });
 
@@ -315,3 +317,6 @@ app.get("/users", async (req, res) => {
   }
 });
 
+
+
+module.exports = app;

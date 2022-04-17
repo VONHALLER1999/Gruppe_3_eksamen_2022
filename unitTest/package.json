@@ -1,0 +1,20 @@
+{
+  "name": "unittest",
+  "version": "1.0.0",
+  "description": "",
+  "main": "unitTest.js",
+  "dependencies": {
+    "chai": "^4.3.6",
+    "chai-http": "^4.3.0",
+    "nodemon": "^2.0.15"
+  },
+  "devDependencies": {
+    "mocha": "^9.2.2"
+  },
+  "scripts": {
+    "test": "mocha --exit unitTest",
+    "start": "nodemon app.js"
+  },
+  "author": "",
+  "license": "ISC"
+}
