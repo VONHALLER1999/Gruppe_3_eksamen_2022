@@ -278,7 +278,7 @@ class postDB {
     try {
       await this.openDatabase();
       console.dir("Connected to SQL Server");
-      
+
       //tjek om brugeren allerede følger det givne post
       const result = await sql.query`select * from Followed
       join [User] U on Followed.user_id = U.user_id
@@ -287,14 +287,15 @@ class postDB {
 
       //hvis brugeren allerede følger post retuneres false, hvis ikke indsættes brugerens id og annoncens id i followed i databasen
       if (result.rowsAffected == 1) {
-        console.dir("User does allready follow that post")
-        return false
+        console.dir("User does allready follow that post");
+        return false;
       } else {
-        console.dir("User does not follow post")
+        const user_id =
+          await sql.query`select user_id from [User] where email = ${userEmail} `;
         //let user_id = result.recordset[0].user_id;
-        console.dir(result)
-        //await sql.query`insert into Followed (user_id, post_id) VALUES (${user_id},${post_id})`;
-        return true
+        await sql.query`insert into Followed (user_id, post_id) VALUES (${user_id.recordset[0].user_id},${post_id})`;
+        console.dir("User follows post now");
+        return true;
       }
     } catch (err) {
       console.dir(err);
@@ -304,6 +305,47 @@ class postDB {
   //HENT FOLLOWED
   //skal returnerer alle post som brugeren følger
   //tager bruger emailen og søger på
+  async showFollowedPosts(userEmail) {
+    try {
+      await this.openDatabase();
+      console.dir("Connected to SQL Server");
+
+      //henter alle post som brugeren følger
+      const result =
+        await sql.query`select f.email, d.postalcode, e.category_name, c.created_at, c.price, c.description,  c.picture, a.post_id
+        from Followed as a
+        join [User] as b
+        on a.user_id = b.user_id
+        join post c on a.post_id = c.post_id
+        join Category as e on e.category_Id = c.category_Id
+        join location as d on d.location_id = c.location_id
+        join [User] as f on f.user_id = c.user_id
+        where b.email ='vilhelm@v'`;
+      console.dir(result);
+      console.dir("all post that: " + userEmail + " follows found");
+      return result;
+    } catch (err) {
+      console.dir(err);
+    }
+  }
+
+  async unFollow(userEmail,post_id) {
+    try {
+      await this.openDatabase();
+      console.dir("Connected to SQL Server");
+
+      //henter alle post som brugeren følger
+      await sql.query`delete Followed
+      from Followed
+      join [User]
+      on [User].user_id = Followed.user_id
+      where post_id = ${post_id} and  [User].email =${userEmail}`;
+      console.dir("all post that: " + userEmail + " follows found");
+      return true;
+    } catch (err) {
+      console.dir(err);
+    }
+  }
 }
 // exporter DB så fs metoderne kan bruges i andre sammenhæng
 module.exports = new postDB();

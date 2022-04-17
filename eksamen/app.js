@@ -9,6 +9,7 @@ const session = require("express-session");
 const db = require("./helpers/db.js");
 const db1 = require("./helpers/db1.js");
 const { UserOwnsPost, deleteUserPost } = require("./helpers/db1.js");
+const { SSL_OP_NO_QUERY_MTU } = require("constants");
 
 //makes sure that the server is up and running
 app.listen(PORT, () => console.log(`Server lytter på port ${PORT}`));
@@ -305,20 +306,39 @@ app.get("/users", async (req, res) => {
 });
 
 app.post("/followpost", async (req, res) => {
-  try {
+    try {
 
-    console.log("User pressed followed")
-    if (req.session.loggedIn == true) {
-        console.log(req.body.post_id, req.session.username);
-        
-        const result = await db1.followPost(req.session.username, req.body.post_id);
+      console.log("User pressed followed")
+      if (req.session.loggedIn == true) {
+          
+          const result = await db1.followPost(req.session.username, req.body.post_id);
 
-        res.send(result);
-    } else {
-      const result = false;
-      res.send(result)
+          res.send(result);
+      } else {
+        res.send(false)
+      }
+    } catch (err) {
+      console.log(err);
     }
+});
 
+
+app.get("/usersfollowpost", async (req, res) => {
+  try {
+    console.log("Showing Users followed post");
+    const result = await db1.showFollowedPosts(req.session.username);
+    res.send(result)
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.post("/unfollow", async (req, res) => {
+  try {
+    console.log("Showing Users followed post");
+    const result = await db1.unFollow(req.session.username,req.body.post_id);
+    console.log(result) 
+    res.send(result);
   } catch (err) {
     console.log(err);
   }
