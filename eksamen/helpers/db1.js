@@ -98,7 +98,7 @@ class postDB {
       return;
     }
   }
-  
+
   //OPDATER POST
   //Virker ikke
   //BUG - UPDATE SQL QUERY virker åbenbart ikke ordentlig, kan godt opdatere en værdi, men ikke flere på en gang
@@ -237,8 +237,9 @@ class postDB {
     try {
       await this.openDatabase();
       console.dir("Connected to SQL Server");
-      //tjekker om brugeren ejer den pågældende post 
-      const result = await sql.query`select a.price from post as a join[User] as b on a.user_id = b.user_id where b.email = ${user} and a.post_id = ${post_id}`;
+      //tjekker om brugeren ejer den pågældende post
+      const result =
+        await sql.query`select a.price from post as a join[User] as b on a.user_id = b.user_id where b.email = ${user} and a.post_id = ${post_id}`;
 
       //hvis brugeren ejer annoncen slettes den
       if (result.rowsAffected == 1) {
@@ -246,16 +247,30 @@ class postDB {
         console.dir(`post with ID: ${post_id}" + " is deleted`);
         return true;
       } else {
-        return false
+        return false;
       }
-
     } catch (err) {
       console.dir(err);
       return;
     }
   }
 
-  
+  //BURDE BLIVE FLYTTET TIL DB OG IKKE DB1
+  async allUsers() {
+    try {
+      await this.openDatabase();
+      console.dir("Connected to SQL Server");
+      const result = await sql.query`select email,user_id from [User]`;
+      console.log("all users found");
+      let numberOfPosts = Object.values(result.recordsets[0][0]);
+      console.log(numberOfPosts);
+      return result;
+    } catch (err) {
+      console.dir(err);
+      return;
+    }
+  }
+
 }
 // exporter DB så fs metoderne kan bruges i andre sammenhæng
 module.exports = new postDB();

@@ -142,6 +142,18 @@ app.get("/deletedeuser", async (req, res) => {
   }
 });
 
+app.post("/admindeleteuser", async (req, res) => {
+  try {
+    console.log(req.body.email);
+    await db.deleteUser(req.body.email);
+    console.log("User succesfully deleted");
+    
+    res.send(true);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 //MANGLER FUNKTION HVIS KODEORD ER FORKERT
 app.post("/updateuser", async (req, res) => {
   try {
@@ -261,5 +273,14 @@ app.post("/deletepost", async (req, res) => {
   }
 });
 
-
+app.get("/users", async (req, res) => {
+  try {
+    const result = await db1.allUsers();
+    let arr = Object.values(result.recordsets[0][0]);
+    console.log(arr[1]);
+    res.send(result);
+  } catch (err) {
+    console.log(err);
+  }
+});
       

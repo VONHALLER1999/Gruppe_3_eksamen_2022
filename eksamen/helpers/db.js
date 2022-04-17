@@ -107,10 +107,12 @@ class DB {
         console.dir("User not found");
         return false;
       } else {
+        //sletter alle post fra brugeren først
         await sql.query`delete post from post as a
         join [User] as b
         on a.user_id = b.user_id
         where b.email = ${email}`;
+        //sletter brugeren
         await sql.query`DELETE FROM [User] WHERE email = ${email}`;
         console.dir("User succesfully deleted");
         return true;
