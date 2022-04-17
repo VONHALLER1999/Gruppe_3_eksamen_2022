@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
           var cell5 = row.insertCell(4);
           var cell6 = row.insertCell(5);
           var cell7 = row.insertCell(6);
+          var cell8 = row.insertCell(7);
 
 
           cell1.innerHTML = result.recordset[i].email;
@@ -35,6 +36,35 @@ document.addEventListener("DOMContentLoaded", (event) => {
           cell5.innerHTML = result.recordset[i].price;
           cell6.innerHTML = result.recordset[i].description;
           cell7.innerHTML = result.recordset[i].picture;
+          cell8.innerHTML = `<button id="${result.recordset[i].post_id}" name="btn"type="submit" value="fav_HTML" onclick='
+      
+      
+      let data = {
+          "post_id": ${result.recordset[i].post_id}
+      }
+      fetch("http://localhost:1010/followpost", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then(function() { 
+        console.log("success") 
+      })
+      .then(function (result) {
+        if(result){
+          window.alert("Du følger nu annoncen, se alle annoncer du følger på din bruger profil");
+        } else if (!result){
+          window.alert("Du følger annoncen i forvejen eller du er ikke logget ind")
+        } 
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+      
+      
+      
+      '> Følg annonce </button>`;
 
           table.appendChild(row);
       }
