@@ -137,7 +137,7 @@ class postDB {
       console.dir("Connected to SQL Server");
 
       const result =
-        await sql.query`select b.email, c.postalcode, d.category_name, a.created_at, a.price, a.description, a.picture, b.status_id from post as a join [User] as b on a.user_id = b.user_id join location as c on c.location_id = a.location_id join Category as d on d.category_Id = a.category_Id join User_status as e on b.status_id = e.status_id order by b.status_id asc`;
+        await sql.query`select b.email, c.postalcode, d.category_name, a.created_at, a.price, a.description, a.picture, b.status_id, a.post_id from post as a join [User] as b on a.user_id = b.user_id join location as c on c.location_id = a.location_id join Category as d on d.category_Id = a.category_Id join User_status as e on b.status_id = e.status_id order by b.status_id asc`;
       console.log("All posts have been found");
       return result;
     } catch (err) {
@@ -271,6 +271,39 @@ class postDB {
     }
   }
 
+  //FØLG ANNONCE
+  //hent bruger id og  post id
+  //derefter indsæt det i followed table
+  async followPost(userEmail, post_id) {
+    try {
+      await this.openDatabase();
+      console.dir("Connected to SQL Server");
+      
+      //tjek om brugeren allerede følger det givne post
+      const result = await sql.query`select * from Followed
+      join [User] U on Followed.user_id = U.user_id
+      where email = ${userEmail} and post_id = ${post_id}`;
+      console.dir("Checking if user is already follows that post");
+
+      //hvis brugeren allerede følger post retuneres false, hvis ikke indsættes brugerens id og annoncens id i followed i databasen
+      if (result.rowsAffected == 1) {
+        console.dir("User does allready follow that post")
+        return false
+      } else {
+        console.dir("User does not follow post")
+        //let user_id = result.recordset[0].user_id;
+        console.dir(result)
+        //await sql.query`insert into Followed (user_id, post_id) VALUES (${user_id},${post_id})`;
+        return true
+      }
+    } catch (err) {
+      console.dir(err);
+    }
+  }
+
+  //HENT FOLLOWED
+  //skal returnerer alle post som brugeren følger
+  //tager bruger emailen og søger på
 }
 // exporter DB så fs metoderne kan bruges i andre sammenhæng
 module.exports = new postDB();

@@ -174,6 +174,26 @@ app.post("/updateuser", async (req, res) => {
   }
  });
 
+app.post("/adminupdateuser", async (req, res) => {
+   try {
+     console.log(req.body.email, req.body.password);
+     const result = await db.adminUpdateUser(
+       req.body.email,
+       req.body.password
+     );
+
+     if (!result) {
+       console.log("noget gik galt");
+       res.send(false);
+     } else {
+       console.log("User succesfully updated");
+       res.send(true)
+     }
+   } catch (err) {
+     console.log(err);
+   }
+ });
+
 app.get("/logout", (req, res) => {
   try {
     req.session.loggedIn = false;
@@ -283,4 +303,23 @@ app.get("/users", async (req, res) => {
     console.log(err);
   }
 });
-      
+
+app.post("/followpost", async (req, res) => {
+  try {
+
+    console.log("User pressed followed")
+    if (req.session.loggedIn == true) {
+        console.log(req.body.post_id, req.session.username);
+        
+        const result = await db1.followPost(req.session.username, req.body.post_id);
+
+        res.send(result);
+    } else {
+      const result = false;
+      res.send(result)
+    }
+
+  } catch (err) {
+    console.log(err);
+  }
+});
