@@ -154,11 +154,22 @@ app.post("/admindeleteuser", async (req, res) => {
   }
 });
 
+app.post("/makegold", async (req, res) => {
+  try {
+    console.log(req.body.email);
+    await db.makeGold(req.body.email);
+    console.log("User succesfully made gold");
+    res.send(true);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
 //MANGLER FUNKTION HVIS KODEORD ER FORKERT
 app.post("/updateuser", async (req, res) => {
   try {
       const result = await db.updateUser(
-        req.body.email,
+        req.session.username,
         req.body.password,
         req.body.newPassword
       );
@@ -172,6 +183,26 @@ app.post("/updateuser", async (req, res) => {
   }catch (err){
    console.log(err)
   }
+ });
+
+ app.post("/adminupdateuser", async (req, res) => {
+   try {
+     console.log(req.body.email, req.body.password);
+     const result = await db.adminUpdateUser(
+       req.body.email,
+       req.body.password
+     );
+
+     if (!result) {
+       console.log("noget gik galt");
+       res.send(false);
+     } else {
+       console.log("User succesfully updated");
+       res.send(true)
+     }
+   } catch (err) {
+     console.log(err);
+   }
  });
 
 app.get("/logout", (req, res) => {
@@ -283,4 +314,4 @@ app.get("/users", async (req, res) => {
     console.log(err);
   }
 });
-      
+

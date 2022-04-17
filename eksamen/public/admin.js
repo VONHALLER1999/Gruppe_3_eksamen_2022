@@ -68,11 +68,75 @@ document.addEventListener("DOMContentLoaded", (event) => {
 
         var cell1 = row.insertCell(0);
         var cell2 = row.insertCell(1);
+        var cell3 = row.insertCell(2);
+        var cell4 = row.insertCell(3);
        
 
         cell1.innerHTML = result.recordset[i].email;
-       
         cell2.innerHTML = `<button name="btn" type="submit" value="fav_HTML" onclick='
+        
+      let password = prompt("Nyt kodeord til brugeren")
+      if (password === "") {
+        window.alert("Intet kodeord")
+      } else if (password) {
+      let data = {
+          "email": "${result.recordset[i].email}",
+          "password": password
+      }
+      fetch("http://localhost:1010/adminupdateuser", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then(function() { 
+        console.log("updated user") 
+      })
+      .then(function (result) {
+        if(result){
+          window.alert("brugerens kodeord blev opdateret");
+        };
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+      
+    } else {
+      window.alert("Operation cancelled")
+    }
+        
+        '> Ny kode </button>`;
+        
+        cell3.innerHTML = `<button name="btn" type="submit" value="fav_HTML" onclick='
+        
+        if (window.confirm("vil du gøre ${result.recordset[i].email} til guld?")) {
+      let data = {
+          "email": "${result.recordset[i].email}"
+      }
+      fetch("http://localhost:1010/makegold", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
+      .then((res) => res.json())
+      .then(function() { 
+        console.log("User made gold status") 
+      })
+      .then(function (result) {
+        if(result){
+          window.alert("brugeren har fået guld status");
+        };
+      })
+      .catch(function (err) {
+        console.log(err);
+      });
+      
+      
+      }
+        
+        '> gør til guld </button>`;
+
+        cell4.innerHTML = `<button name="btn" type="submit" value="fav_HTML" onclick='
         
         if (window.confirm("Er du sikker?")) {
       let data = {

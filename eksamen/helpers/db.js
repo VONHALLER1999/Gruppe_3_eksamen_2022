@@ -135,7 +135,7 @@ class DB {
         console.dir("User is admin");
         return true;
       } else {
-        console.dir("User is not admin")
+        console.dir("User is not admin");
         return false;
       }
       //Error handling
@@ -145,36 +145,84 @@ class DB {
     }
   }
 
-  async updateUser(email, password, newPassword){
+  async updateUser(email, password, newPassword) {
     try {
-          //Tjekker om der er fundet noget i DB, hvis ikke returnere den "false"
-          const result = await this.findUser(email);
-          console.log(result)
-          if (!result) {
-              console.dir ("User not found");
-              return false;
-          } else if (result.recordset[0].email === email && result.recordset[0].psw === password) {
-            
-            await sql.query`update [User]
+      //Tjekker om der er fundet noget i DB, hvis ikke returnere den "false"
+      const result = await this.findUser(email);
+      console.log(result);
+      if (!result) {
+        console.dir("User not found");
+        return false;
+      } else if (
+        result.recordset[0].email === email &&
+        result.recordset[0].psw === password
+      ) {
+        await sql.query`update [User]
               set psw = ${newPassword}
               where email = ${email}`;
-            console.dir("User succesfully updated");
-            //req.session.loggedin = true;
-       
-            return true;
-          } else {
-            //Brugeren blev fundet, men det er det forkerte kodeord
-            console.dir("Password is incorrect");
-           
-            return false;
-          }
-          //Error handling
-          } catch(err) {
-              console.log(err);
-              return;
-          }
-        }
+        console.dir("User succesfully updated");
+        //req.session.loggedin = true;
 
+        return true;
+      } else {
+        //Brugeren blev fundet, men det er det forkerte kodeord
+        console.dir("Password is incorrect");
+
+        return false;
+      }
+      //Error handling
+    } catch (err) {
+      console.log(err);
+      return;
+    }
+  }
+  //admins update user funktion som ikke behøver at give det gamle kodeord
+  async adminUpdateUser(email, newPassword) {
+    try {
+      //Tjekker om der er fundet noget i DB, hvis ikke returnere den "false"
+      const result = await this.findUser(email);
+      console.log(result);
+      if (!result) {
+        console.dir("User not found");
+        return false;
+      } else {
+        await sql.query`update [User]
+              set psw = ${newPassword}
+              where email = ${email}`;
+        console.dir("User succesfully updated");
+        return true;
+      }
+
+      //Error handling
+    } catch (err) {
+      console.log(err);
+      return;
+    }
+  }
+
+  async makeGold(email) {
+    try {
+      //Tjekker om der er fundet noget i DB, hvis ikke returnere den "false"
+      const result = await this.findUser(email);
+      console.log(result);
+      if (!result) {
+        console.dir("User not found");
+        return false;
+      } else {
+        //gører brugeren til "guld status" ved at ændre status_id til 2
+        await sql.query`update [User]
+              set status_id = 2
+              where email = ${email}`;
+        console.dir("User succesfully updated");
+        return true;
+      }
+      
+      //Error handling
+    } catch (err) {
+      console.log(err);
+      return;
+    }
+  }
 }
 // exporter DB så metoderne kan bruges i andre sammenhæng
 module.exports = new DB();
