@@ -6,22 +6,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+<script src="./opslag.js"></script>
 <body align="center">
     <header>
       <h1>Opret opslag</h1>
     </header>
 
-    <form action="/opretopslag" method="POST">
+    <form>
       <fieldset>
         <label>Kategori</label>
-        <select name="kategori">
+        <select name="kategori" id="kategori">
           <option value="stole">Stole</option>
           <option value="bord">Bord</option>
           <option value="bil">Bil</option>
         </select>
         <br /><br />
         <label>Billede</label>
-        <input type="file" name="billede" />
+        <input id="billede"type="file" required onchange="imageUploaded();" />
+        <div> </div>
         <br /><br />
         <label>Pris</label>
         <input
@@ -54,10 +56,11 @@
 
         <br /><br />
 
-        <input type="submit" value="Submit" />
+        <input id="submit" type="submit" value="Submit" />
       </fieldset>
     </form>
     <br /><br />
     <a id="mylink" href="./index.html">HOME</a>
+  
   </body>
 </html>

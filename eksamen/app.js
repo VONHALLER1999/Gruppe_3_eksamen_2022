@@ -12,13 +12,13 @@ const db1 = require("./helpers/db1.js");
 //makes sure that the server is up and running
 app.listen(PORT, () => console.log(`Server lytter på port ${PORT}`));
 
-//middleware der parser request fra klienten så der kan bruges req.body her i serveren uden ekstra kode
-app.use(bodyParser.urlencoded({ extended: false }));
-
 //sørger for at 
 app.use(express.static(path.join(__dirname, "./public")));
 
 app.use(express.json());
+
+//middleware der parser request fra klienten så der kan bruges req.body her i serveren uden ekstra kode
+app.use(bodyParser.urlencoded({limit:'mb', extended: false }));
 
 //session coockie                                  
 app.use(session({
@@ -270,8 +270,9 @@ app.post("/opretopslag", async (req, res) => {
       req.body.descripton,
       req.body.kategori,
       req.body.postalcode,
-      "testdata"
+      req.body.billede
     );
+    res.send(true)
    
   } catch (err) {
     console.log(err)

@@ -1,45 +1,69 @@
-document.addEventListener("DOMContentLoaded", (event) => {
+let base64String = "";
 
-  document.getElementById("postBtn").addEventListener("click", (event) => {
+function imageUploaded() {
+  var file = document.querySelector("input[type=file]")["files"][0];
+
+  var reader = new FileReader();
+  console.log("next");
+
+  reader.onload = function () {
+    base64String = reader.result;
+
+    imageBase64Stringsep = base64String;
+
+    // alert(imageBase64Stringsep);
+    console.log(base64String);
+  };
+  reader.readAsDataURL(file);
+}
+
+
+document.addEventListener("DOMContentLoaded", (event) => {
+  document.getElementById("submit").addEventListener("click", (event) => {
     event.preventDefault();
-    console.log("clicked post");
-    fetch("http://localhost:1010/allposts")
+    
+    console.log()
+    console.log(
+      document.getElementById("pris").value,
+      document.getElementById("descripton").value,
+      document.getElementById("kategori").value, 
+      document.getElementById("postalcode").value,
+    );
+    let data = {
+      pris: document.getElementById("pris").value,
+      descripton: document.getElementById("descripton").value,
+      kategori: document.getElementById("kategori").value,
+      postalcode: document.getElementById("postalcode").value,
+      billede: base64String,
+    };
+
+    console.log(data);
+    console.log("clicked submit login");
+    fetch("http://localhost:1010/opretopslag", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    })
       .then((res) => res.json())
       .then(function (result) {
-        createTable(result);
+        login(result);
       })
-      .then(function() { 
-        console.log("success") 
+      .then(function () {
+        console.log("success");
+      })
+      .then(function () {
+        console.log(data);
       })
       .catch(function (err) {
         console.log(err);
       });
 
-     
-      function createTable(result) {
-        for (let i=0; i < result.recordset.length; i++) {
-          var table = document.getElementById("table");
-          var row = table.insertRow(i);
-
-          var cell1 = row.insertCell(0);
-          var cell2 = row.insertCell(1);
-          var cell3 = row.insertCell(2);
-          var cell4 = row.insertCell(3);
-          var cell5 = row.insertCell(4);
-          var cell6 = row.insertCell(5);
-          var cell7 = row.insertCell(6);
-
-
-          cell1.innerHTML = result.recordset[i].email;
-          cell2.innerHTML = result.recordset[i].postalcode;
-          cell3.innerHTML = result.recordset[i].category_name;
-          cell4.innerHTML = result.recordset[i].created_at;
-          cell5.innerHTML = result.recordset[i].price;
-          cell6.innerHTML = result.recordset[i].description;
-          cell7.innerHTML = result.recordset[i].picture;
-
-          table.appendChild(row);
+    function login(result) {
+      if (!result) {
+        window.alert("forkert data");
+      } else {
+        window.alert("Dit opslag blev oprettet");
       }
     }
-  })
-})
+  });
+});

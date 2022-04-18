@@ -31,14 +31,16 @@ document.addEventListener("DOMContentLoaded", (event) => {
           var cell7 = row.insertCell(6);
           var cell8 = row.insertCell(7);
 
-
+          console.log(result.recordset[i].picture);
           cell1.innerHTML = result.recordset[i].email;
           cell2.innerHTML = result.recordset[i].postalcode;
           cell3.innerHTML = result.recordset[i].category_name;
           cell4.innerHTML = result.recordset[i].created_at;
           cell5.innerHTML = result.recordset[i].price;
           cell6.innerHTML = result.recordset[i].description;
-          cell7.innerHTML = result.recordset[i].picture;
+          cell7.innerHTML = `<img src="${result.recordset[i].picture}"/>`;
+          
+          
           cell8.innerHTML = `<button id="${result.recordset[i].post_id}" name="btn"type="submit" value="fav_HTML" onclick='
       
       
