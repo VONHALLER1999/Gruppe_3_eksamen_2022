@@ -8,8 +8,6 @@ const session = require("express-session");
 
 const db = require("./helpers/db.js");
 const db1 = require("./helpers/db1.js");
-const { UserOwnsPost, deleteUserPost } = require("./helpers/db1.js");
-
 
 //makes sure that the server is up and running
 app.listen(PORT, () => console.log(`Server lytter på port ${PORT}`));
@@ -348,10 +346,47 @@ app.get("/usersfollowpost", async (req, res) => {
 
 app.post("/unfollow", async (req, res) => {
   try {
-    console.log("Showing Users followed post");
+    console.log("Unfollow post id: " + req.body.post_id);
     const result = await db1.unFollow(req.session.username,req.body.post_id);
     console.log(result) 
     res.send(result);
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.get("/updatepost", async (req, res) => {
+  try {
+    if(req.session.loggedIn) {
+      res.sendFile(__dirname + '/public/updatepost.html')
+    } else {
+      res.sendFile(__dirname + "/public/index.html");
+    }
+  } catch (err) {
+    console.log(err);
+  }
+});
+
+app.post("/updatepost", async (req, res) => {
+  try {
+    const result = await db1.updatePost(
+      req.body.post_id,
+      req.body.pris,
+      req.body.descripton,
+      req.body.kategori,
+      "req.body.picture",
+      req.body.postalcode,
+      req.session.username
+    );
+    console.log(
+      req.body.post_id,
+      req.body.pris,
+      req.body.descripton,
+      req.body.kategori,
+      "req.body.picture",
+      req.body.postalcode,
+      req.session.username
+    );
   } catch (err) {
     console.log(err);
   }

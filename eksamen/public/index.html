@@ -31,8 +31,19 @@
         </select>
 		<input id="categoryBtn" type="submit" value="Submit" />
     </form>
+    <input type="text" id="myInput" onkeyup="filterForPostalcode()" placeholder="Søg på postnummer.." title="Type in a name" maxlength="4">
+    <input type="text" id="myInput2" onkeyup="filterForDescript()" placeholder="Søg på beskrivelse.." title="Type in a name">
+     <input type="text" id="myInput3" onkeyup="filterForPrice()" placeholder="fra indtastet pris og ned" title="Type in a name">
+    <br></br>
+    <form id="myInput3">
+            <label>
+                alle opsalg fra dato og frem
+                <input type="date" id="myInput3"  required>
+                <button id="dateSubmit">Submit</button>
+            </label>
+    </form> 
 
-   
+
     <table id="table">
         <tr>
             <th>Email</th>

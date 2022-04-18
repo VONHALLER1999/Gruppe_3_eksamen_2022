@@ -1,7 +1,10 @@
 document.addEventListener("DOMContentLoaded", (event) => {
 
- 
-    event.preventDefault();
+  
+
+
+
+   event.preventDefault();
     fetch("http://localhost:1010/allposts")
       .then((res) => res.json())
       .then(function (result) {
@@ -54,9 +57,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       .then(function (result) {
         if(result){
           window.alert("Du følger nu annoncen, se alle annoncer du følger på din bruger profil");
-        } else if (!result){
-          window.alert("Du følger annoncen i forvejen eller du er ikke logget ind")
-        } 
+        }
       })
       .catch(function (err) {
         console.log(err);
@@ -198,5 +199,101 @@ document.addEventListener("DOMContentLoaded", (event) => {
              }
            }
          });
+
+
+document.getElementById("dateSubmit").addEventListener("keydown", (event) => {
+  event.preventDefault();
+});
+
 })
 
+
+//BEGGE FUNKTIONER HUGGET FRA https://www.w3schools.com/howto/howto_js_filter_table.asp
+function filterForPostalcode() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("table");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[1];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function filterForDescript() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput2");
+  filter = input.value.toUpperCase();
+  table = document.getElementById("table");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[5];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+function filterForPrice() {
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput3");
+  console.log(input.value)
+  filter = input.value.toUpperCase();
+  table = document.getElementById("table");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[4];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      console.log(txtValue);
+      if (parseInt(txtValue) >= parseInt(input.value)) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+}
+
+/*
+function filterForAge() {
+ var today = new Date();
+ var date =
+   today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+  console.log(date)
+
+  var input, filter, table, tr, td, i, txtValue;
+  input = document.getElementById("myInput3");
+  console.log(input);
+  filter = input.value.toUpperCase();
+  table = document.getElementById("table");
+  tr = table.getElementsByTagName("tr");
+  for (i = 0; i < tr.length; i++) {
+    td = tr[i].getElementsByTagName("td")[3];
+    if (td) {
+      txtValue = td.textContent || td.innerText;
+      console.log(txtValue);
+
+      if (txtValue.toUpperCase().indexOf(filter) > -1) {
+        tr[i].style.display = "";
+      } else {
+        tr[i].style.display = "none";
+      }
+    }
+  }
+
+}
+*/

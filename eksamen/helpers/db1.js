@@ -102,26 +102,43 @@ class postDB {
   //OPDATER POST
   //Virker ikke
   //BUG - UPDATE SQL QUERY virker åbenbart ikke ordentlig, kan godt opdatere en værdi, men ikke flere på en gang
-  async updatePost(post_id, price, description, category_id, picture) {
+  async updatePost(post_id, price, description, categoryname, picture, postnummer, username) {
     try {
       // make sure that any items are correctly URL encoded in the connection string
       await this.openDatabase();
       console.dir("Connected to SQL Server");
-      const result =
-        await sql.query`select * from post where post_id = ${post_id}`;
+      
+      //Tjekker om brugeren ejer annoncen
+      const result = await sql.query`
+      select a.post_id, b.user_id
+      from post as a
+      join [User] as b
+      on a.user_id = b.user_id
+      where a.post_id = ${post_id} and b.email = ${username}`;
 
-      //Tjekker om der er fundet noget i DB, hvis ikke returnere den, da 0 rowsaffected betyder intet fundet
+      //Hvis brugeren enten ikke ejer annoncen eller post_id'et er forkert returners false
       if (result.rowsAffected == 0) {
         console.dir(
           "Unable to update post, because post id is incorrect or post does not exist"
         );
-        sql.close();
-        return true;
-      } else {
-        await sql.query`UPDATE post SET price = ${price}, description = ${description}, category_id = ${category_id}, picture = ${picture} WHERE post_id = ${post_id}`;
-        console.dir("Post Updated");
-        sql.close();
+        
         return false;
+      } else {
+        //opdaterer anonncen med de nye input og retunerer true 
+        await sql.query`UPDATE post
+        SET price = ${price}, description = ${description},
+        category_id = b.category_Id,
+        picture = ${picture},
+        location_id =  c.location_id
+        from post as a
+        join Category as b
+        on category_name = ${categoryname}
+        join location as c
+        on c.postalcode = ${postnummer}
+        WHERE post_id = ${post_id};`;
+        console.dir("Post Updated");
+
+        return true;
       }
     } catch (err) {
       console.log(err);
@@ -320,8 +337,7 @@ class postDB {
         join Category as e on e.category_Id = c.category_Id
         join location as d on d.location_id = c.location_id
         join [User] as f on f.user_id = c.user_id
-        where b.email ='vilhelm@v'`;
-      console.dir(result);
+        where b.email =${userEmail}`;
       console.dir("all post that: " + userEmail + " follows found");
       return result;
     } catch (err) {

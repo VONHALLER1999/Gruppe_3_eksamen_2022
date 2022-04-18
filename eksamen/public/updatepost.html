@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body align="center">
+    <header>
+      <h1>updaterer opslag</h1>
+    </header>
+
+    <form action="/updatepost" method="POST">
+        
+        
+        
+      <fieldset>
+          <label>Annonce ID</label>
+          <input
+          type="text"
+          id="post_id"
+          name="post_id"
+          placeholder="f.eks. 23"
+          required
+        />
+        <br /><br />
+        <label>Kategori</label>
+        <select name="kategori">
+          <option value="stole">Stole</option>
+          <option value="bord">Bord</option>
+          <option value="bil">Bil</option>
+        </select>
+        <br /><br />
+        <label>Billede</label>
+        <input type="file" name="billede" />
+        <br /><br />
+        <label>Pris</label>
+        <input
+          type="text"
+          id="pris"
+          name="pris"
+          placeholder="f.eks. 100kr"
+          required
+        />
+        <br /><br />
+        <label>Postnummer</label>
+        <!-- bruger regex til at sørger for at postnummer kun er tal og maxlength til at det tal kun er 4 cifre langt -->
+        <input
+          type="test"
+          id="postalcode"
+          name="postalcode"
+          required
+          maxlength="4"
+          pattern="\d*"
+        />
+
+        <br /><br />
+        <label>Beskrivelse</label>
+        <input
+          type="text"
+          id="descripton"
+          name="descripton"
+          required
+        />
+
+        <br /><br />
+
+        <input type="submit" value="Submit" />
+      </fieldset>
+    </form>
+    <br /><br />
+    <a id="mylink" href="./updateuser.html">Go back</a>
+  </body>
+</html>

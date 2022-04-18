@@ -171,5 +171,7 @@ console.log(result.recordset[i]);
     }
   }
 
-
+  document.getElementById("updatePostBtn").addEventListener("click", (event) => {
+    window.location.href = "/updatepost";
+  })
 })
