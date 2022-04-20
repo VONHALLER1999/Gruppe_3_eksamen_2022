@@ -4,74 +4,51 @@ const chaiHttp = require("chai-http");
 const app = require("../eksamen/app.js");
 
 chai.use(chaiHttp);
+var agent = chai.request.agent(app)
 
-
-/* Krav 9 testes her... den er måske lidt for nem? */
-//mistænker det er mit setup som fucker med resulatatet. det her burde virke
-
-describe("Krav 12 - Unit Test", () => {  
-
-
-  describe("GET /logout", () => {                   //tester om endpointet er aktiveret
-    it("session skal være 'false", (done) => {
-      chai
-      .request(app)
-      .get("/logoutUser")
-      .end((err, req) => {
-        //expect(res.status).to.equal(200);
-        expect(err).to.not.be.true;
-        //expect(req.session.loggedIn).to.not.be.true;
-        done();   
-      });
-    });    
+//Krav 9 testes her
+describe("Unittest af Krav 4", () => {  
+  describe("POST /login", () => {                 
+    it("logger korrekt testbruger", (done) => {
+      agent
+        .post('/login')
+        .send({ email: 'test@1', password: 'test' })
+        .end((err, res, result) => { //result == null
+          expect(err).to.be.null;
+          expect(res.status).to.equal(200);
+          //indsæt ny
+          done();     
+        });
+    });
   });
-  
-  describe("GET /logout", () => {                   //tester om endpointet er aktiveret
-    it("session skal være 'false", (done) => {
-      chai
-      .request(app)
-      .get("/logoutUser")
-      .end((err, res) => {
-        expect(res.status).not.to.be.false;
-        done();   
-      });
-    });    
-  })
-  /*
-  describe("GET /loggedstatus", () => {             //tester om selve sessionen er ændret
-    it("session skal være 'false", (done) => {
-      chai
-      .request(app)
-      .get("/loggedstatus")
-      .end((err, res) => {
-        res.should.have.status(false);
-        done();   
-      });
-    });    
+  describe("POST /login", () => {                 
+    it("logger falsk testbruger", (done) => {
+      agent
+        .post('/login')
+        .send({ email: 'test@forkert', password: 'forkert' })
+        .end((err, res) => {
+          expect(err).to.be.null;
+          expect(res.status).to.equal(200);
+          //indsæt ny
+          done();     
+        });
+    });
   });
-*/
+  describe("GET /loggedstatus", () => {  
+    it("kontrollere loggedstatus", (done) =>{
+      agent
+      .post('/login')
+      .send({ email: 'test@1', password: 'test' })
+      .then(function(res){
+        agent.get('/loggedstatus')
+             .end((err, res) => {
+               expect(err).to.be.null;
+                expect(res.status).to.equal(200);
+                //indsæt ny
+                done();
+             });
+      });
+    });
+  });
 });
 
-/*
-app.get("/logout", (req, res) => {
-  try {
-    req.session.loggedIn = false;
-    req.session.username = null;
-    console.log("User logged out")
-    res.send(true)
-    res.status(200);
-  } catch (err) {
-    console.log(err);
-    res.status(400)
-  }
-});
-
-app.get("/loggedstatus", async (req, res) => {
-  if (req.session.loggedIn) {   
-    res.send(true);
-  } else {
-    res.send(false);
-  }
-});
-
-*/

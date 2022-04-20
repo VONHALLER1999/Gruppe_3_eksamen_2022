@@ -31,8 +31,10 @@ app.use(session({
 app.get("/loggedstatus", async (req, res) => {
   if (req.session.loggedIn) {   
     res.send(true);
+    res.status(200);
   } else {
     res.send(false);
+    res.status(404); //find den rigtige status kode her
   }
 });
 
@@ -51,11 +53,11 @@ app.get('/', function(req, res) {
 //login endpoint
 app.post("/login", async (req, res) => {
   try {
-    console.log(req.body.email)
     const result = await db.loginUser(req.body.email, req.body.password);
     if (!result) {
       console.log("Email eller kodeord er forkert");
       res.send(result);
+      return result;
     } else {
       console.log("User login succes");
       req.session.username = req.body.email;
@@ -392,3 +394,5 @@ app.post("/updatepost", async (req, res) => {
     console.log(err);
   }
 });
+
+module.exports = app; 
