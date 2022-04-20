@@ -179,7 +179,7 @@ app.post("/updateuser", async (req, res) => {
      res.send(false);
    } else {
      console.log("User succesfully updated")
-     res.sendFile(__dirname + "/public/index.html");
+     res.sendFile(__dirname + "/public/updateuser.html");
    }
   }catch (err){
    console.log(err)

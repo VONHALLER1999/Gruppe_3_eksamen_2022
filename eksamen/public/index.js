@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
           var cell7 = row.insertCell(6);
           var cell8 = row.insertCell(7);
 
-          console.log(result.recordset[i].picture);
+          
           cell1.innerHTML = result.recordset[i].email;
           cell2.innerHTML = result.recordset[i].postalcode;
           cell3.innerHTML = result.recordset[i].category_name;

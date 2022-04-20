@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
   document.getElementById("submit").addEventListener("click", (event) => {
     event.preventDefault();
     
-    console.log()
+
     console.log(
       document.getElementById("pris").value,
       document.getElementById("descripton").value,
