@@ -31,10 +31,8 @@ app.use(session({
 app.get("/loggedstatus", async (req, res) => {
   if (req.session.loggedIn) {   
     res.send(true);
-    res.status(200);
   } else {
     res.send(false);
-    res.status(404); //find den rigtige status kode her
   }
 });
 
