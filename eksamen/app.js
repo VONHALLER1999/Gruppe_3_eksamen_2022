@@ -55,7 +55,6 @@ app.post("/login", async (req, res) => {
     if (!result) {
       console.log("Email eller kodeord er forkert");
       res.send(result);
-      return result;
     } else {
       console.log("User login succes");
       req.session.username = req.body.email;

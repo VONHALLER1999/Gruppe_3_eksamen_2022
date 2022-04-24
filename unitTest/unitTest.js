@@ -9,7 +9,7 @@ var agent = chai.request.agent(app);
 //open integreret terminal -> run: "npm test "
 //test: "mocha -- timeout 10000 -- unitTest" (forlænget timeout)
 
-//Krav 9 testes her
+//Krav 12:
 describe("Unittest af Krav 4", () => {  
   describe("POST /login", () => {                 
     it("logger korrekt testbruger", (done) => {
