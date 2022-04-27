@@ -14,7 +14,6 @@ class postDB {
   }
 
   // LAV POST
-  //MANGLER FUNKTIONALITET TIL BILLEDE
   async createPost(
     username,
     price,
