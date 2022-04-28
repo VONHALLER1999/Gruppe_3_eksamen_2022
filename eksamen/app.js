@@ -6,9 +6,9 @@ const bodyParser = require("body-parser")
 const path = require("path");
 const session = require("express-session");
 
-const db = require("./helpers/db.js");
-const db1 = require("./helpers/db1.js");
-const albert = require("./helpers/db1")
+const db = require("./helpers/db.js");  //User related  
+const db1 = require("./helpers/db1.js");  //Post related
+
 //makes sure that the server is up and running
 app.listen(PORT, () => console.log(`Server lytter på port ${PORT}`));
 
