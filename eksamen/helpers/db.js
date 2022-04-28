@@ -1,7 +1,3 @@
-
-
-
-
 //Sat op med mssql
 const sql = require('mssql');
 

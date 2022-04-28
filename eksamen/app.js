@@ -8,7 +8,7 @@ const session = require("express-session");
 
 const db = require("./helpers/db.js");
 const db1 = require("./helpers/db1.js");
-
+const albert = require("./helpers/db1")
 //makes sure that the server is up and running
 app.listen(PORT, () => console.log(`Server lytter på port ${PORT}`));
 
@@ -19,6 +19,8 @@ app.use(express.json());
 
 //middleware der parser request fra klienten så der kan bruges req.body her i serveren uden ekstra kode
 app.use(bodyParser.urlencoded({limit:'mb', extended: false }));
+
+
 
 //session coockie                                  
 app.use(session({
