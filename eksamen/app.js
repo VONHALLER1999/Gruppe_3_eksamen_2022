@@ -38,17 +38,6 @@ app.get("/loggedstatus", async (req, res) => {
   }
 });
 
-//gå til login.html før index.html, såfremt der ikke er logged ind på en bruger  
-//MANGLER SESSION UDVIKLING                   
-app.get('/', function(req, res) {
-  if (req.session.loggedIn) {
-    res.sendFile(__dirname + '/public/index.html');
-    console.log("Already logged in");
-  } else {
-    res.sendFile(__dirname + '/public/login.html');
-    console.log("Not logged in");
-  }
-});
 
 //login endpoint
 app.post("/login", async (req, res) => {
