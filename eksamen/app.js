@@ -20,6 +20,8 @@ app.use(express.json());
 //middleware der parser request fra klienten så der kan bruges req.body her i serveren uden ekstra kode
 app.use(bodyParser.urlencoded({limit:'mb', extended: false }));
 
+
+
 //session coockie                                  
 app.use(session({
 	secret: 'secret',
