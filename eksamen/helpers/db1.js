@@ -3,6 +3,8 @@
 const sql = require('mssql');
 
 class postDB {
+
+  
   async openDatabase() {
     try {
       await sql.connect(
@@ -14,7 +16,6 @@ class postDB {
   }
 
   // LAV POST
-  //MANGLER FUNKTIONALITET TIL BILLEDE
   async createPost(
     username,
     price,

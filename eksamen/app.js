@@ -6,8 +6,8 @@ const bodyParser = require("body-parser")
 const path = require("path");
 const session = require("express-session");
 
-const db = require("./helpers/db.js");
-const db1 = require("./helpers/db1.js");
+const db = require("./helpers/db.js");  //User related  
+const db1 = require("./helpers/db1.js");  //Post related
 
 //makes sure that the server is up and running
 app.listen(PORT, () => console.log(`Server lytter på port ${PORT}`));
@@ -19,6 +19,8 @@ app.use(express.json());
 
 //middleware der parser request fra klienten så der kan bruges req.body her i serveren uden ekstra kode
 app.use(bodyParser.urlencoded({limit:'mb', extended: false }));
+
+
 
 //session coockie                                  
 app.use(session({
@@ -36,17 +38,6 @@ app.get("/loggedstatus", async (req, res) => {
   }
 });
 
-//gå til login.html før index.html, såfremt der ikke er logged ind på en bruger  
-//MANGLER SESSION UDVIKLING                   
-app.get('/', function(req, res) {
-  if (req.session.loggedIn) {
-    res.sendFile(__dirname + '/public/index.html');
-    console.log("Already logged in");
-  } else {
-    res.sendFile(__dirname + '/public/login.html');
-    console.log("Not logged in");
-  }
-});
 
 //login endpoint
 app.post("/login", async (req, res) => {

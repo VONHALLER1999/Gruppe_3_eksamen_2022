@@ -52,5 +52,31 @@ describe("Unittest af Krav 4", () => {
         });
     });
   });
+  describe("POST /login", () => {                 
+    it("logger korrekt email og forkert psw", (done) => {
+      agent
+        .post('/login')
+        .send({ email: 'test@1', password: 'forkert' })
+        .end((err, res) => { 
+          expect(err).to.be.null;
+          expect(res.status).to.equal(200);
+          expect(res.body).to.equal(false);
+          done();     
+        });
+    });
+  });
+  describe("POST /login", () => {                 
+    it("logger korrekt psw og forkert email", (done) => {
+      agent
+        .post('/login')
+        .send({ email: 'forkert', password: 'test' })
+        .end((err, res) => { 
+          expect(err).to.be.null;
+          expect(res.status).to.equal(200);
+          expect(res.body).to.equal(false);
+          done();     
+        });
+    });
+  });
 });
 
