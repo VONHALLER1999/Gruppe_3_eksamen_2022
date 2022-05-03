@@ -175,8 +175,8 @@ app.post("/updateuser", async (req, res) => {
      console.log("kodeord er forkert");
      res.send(false);
    } else {
-     console.log("User succesfully updated")
-     res.sendFile(__dirname + "/public/updateuser.html");
+     console.log("User succesfully updated");
+     res.sendFile(__dirname + "/public/index.html");
    }
   }catch (err){
    console.log(err)
@@ -318,7 +318,6 @@ app.get("/users", async (req, res) => {
 
 app.post("/followpost", async (req, res) => {
     try {
-
       console.log("User pressed followed")
       if (req.session.loggedIn == true) {
           
@@ -367,6 +366,7 @@ app.get("/updatepost", async (req, res) => {
   }
 });
 
+
 app.post("/updatepost", async (req, res) => {
   try {
     const result = await db1.updatePost(
@@ -378,6 +378,8 @@ app.post("/updatepost", async (req, res) => {
       req.body.postalcode,
       req.session.username
     );
+    //Hvis succesfuld
+    if(result){
     console.log(
       req.body.post_id,
       req.body.pris,
@@ -387,6 +389,11 @@ app.post("/updatepost", async (req, res) => {
       req.body.postalcode,
       req.session.username
     );
+    res.sendFile(__dirname + "/public/updateuser.html");
+    //sender fejlkode hvis ikke opslag opdateres
+    }else{
+      res.sendStatus(404);
+    }
   } catch (err) {
     console.log(err);
   }
