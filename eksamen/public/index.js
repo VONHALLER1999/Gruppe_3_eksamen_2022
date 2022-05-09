@@ -194,7 +194,8 @@ document.addEventListener("DOMContentLoaded", (event) => {
   });
 });
 
-//BEGGE FUNKTIONER HUGGET FRA https://www.w3schools.com/howto/howto_js_filter_table.asp
+//Filterings kode inspireteret af  
+ https://www.w3schools.com/howto/howto_js_filter_table.asp
 function filterForPostalcode() {
   var input, filter, table, tr, td, i, txtValue;
   input = document.getElementById("myInput");
@@ -255,7 +256,7 @@ function filterForPrice() {
 }
 
 function filterForDate() {
-  var input, filter, table, tr, td, i, txtValue;
+  var input, table, tr, td, i, txtValue;
   input = document.getElementById("myInput5");
   filterDate = new Date(input.value);
   console.log(input.value);
@@ -277,32 +278,5 @@ function filterForDate() {
   }
 }
 
-/*
-function filterForAge() {
- var today = new Date();
- var date =
-   today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
-  console.log(date)
 
-  var input, filter, table, tr, td, i, txtValue;
-  input = document.getElementById("myInput3");
-  console.log(input);
-  filter = input.value.toUpperCase();
-  table = document.getElementById("table");
-  tr = table.getElementsByTagName("tr");
-  for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[3];
-    if (td) {
-      txtValue = td.textContent || td.innerText;
-      console.log(txtValue);
 
-      if (txtValue.toUpperCase().indexOf(filter) > -1) {
-        tr[i].style.display = "";
-      } else {
-        tr[i].style.display = "none";
-      }
-    }
-  }
-
-}
-*/
