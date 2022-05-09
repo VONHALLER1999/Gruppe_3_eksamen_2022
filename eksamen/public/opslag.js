@@ -1,14 +1,9 @@
 let base64String = "";
 
 function imageUploaded() {
-
   var fileInput = document.getElementById("billede");
-  const selectedFile = fileInput.files[0];
-
-  
+  const selectedFile = fileInput.files[0];  
   var reader = new FileReader();
- 
-
   reader.onload = function () {
     base64String = reader.result;
   };

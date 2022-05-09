@@ -68,7 +68,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
       cell4.innerHTML = result.recordset[i].created_at;
       cell5.innerHTML = result.recordset[i].price;
       cell6.innerHTML = result.recordset[i].description;
-      cell7.innerHTML = result.recordset[i].picture;
+      cell7.innerHTML = `<img src="${result.recordset[i].picture}"/>`;
       cell8.innerHTML = `<button id="${result.recordset[i].post_id}" name="btn"type="submit" value="fav_HTML" onclick='
       
       if (window.confirm("Er du sikker?")) {
@@ -140,7 +140,7 @@ console.log(result.recordset[i]);
       cell4.innerHTML = result.recordset[i].created_at;
       cell5.innerHTML = result.recordset[i].price;
       cell6.innerHTML = result.recordset[i].description;
-      cell7.innerHTML = result.recordset[i].picture;
+      cell7.innerHTML = `<img src="${result.recordset[i].picture}"/>`;
       cell8.innerHTML = `<button id="${result.recordset[i].post_id}" name="btn"type="submit" value="fav_HTML" onclick='
       
       if (window.confirm("Er du sikker?")) {
