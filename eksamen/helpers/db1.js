@@ -2,7 +2,7 @@
 //Sat op med mssql
 const sql = require('mssql');
 
-class postDB {
+class PostDB {
   
   async openDatabase() {
     try {
@@ -69,7 +69,7 @@ class postDB {
     }
   }
 
-  //VIRKER IKKE DATABASE UNDEFIND DONT KNOW...
+  //Sletter brugers salgsopslag på baggrund af bruger email og post_id
   async deleteUserPost(post_id, user) {
     try {
       await this.openDatabase();
@@ -100,8 +100,6 @@ class postDB {
   }
 
   //OPDATER POST
-  //Virker ikke
-  //BUG - UPDATE SQL QUERY virker åbenbart ikke ordentlig, kan godt opdatere en værdi, men ikke flere på en gang
   async updatePost(post_id, price, description, categoryname, postnummer, username) {
     try {
       // make sure that any items are correctly URL encoded in the connection string
@@ -120,9 +118,9 @@ class postDB {
       if (result.rowsAffected == 0) {
         console.dir(
           "Unable to update post, because post id is incorrect or post does not exist"
-        );
-        
+        ); 
         return false;
+
       } else {
         //opdaterer anonncen med de nye input og retunerer true 
         await sql.query`UPDATE post
@@ -136,7 +134,6 @@ class postDB {
         on c.postalcode = ${postnummer}
         WHERE post_id = ${post_id};`;
         console.dir("Post Updated");
-
         return true;
       }
     } catch (err) {
@@ -188,7 +185,7 @@ class postDB {
     }
   }
 
-  //Funktionen der retunerer antal af anonncer i databasen
+  //Funktionen der returnerer antal af anonncer i databasen
   async numberOfPosts() {
     try {
       await this.openDatabase();
@@ -217,14 +214,13 @@ class postDB {
       group by a.email`;
       console.log("post amount for each user found");
       console.log(result);
-
       return result;
     } catch (err) {
       console.dir(err);
       return;
     }
   }
-
+//finder alle opslag som tilhørende den specifikke bruger som er logget ind gennem klienten
   async allUsersPosts(username) {
     try {
       await this.openDatabase();
@@ -249,6 +245,8 @@ class postDB {
       return;
     }
   }
+
+
   async deletePost(post_id, user) {
     try {
       await this.openDatabase();
@@ -269,22 +267,7 @@ class postDB {
       console.dir(err);
       return;
     }
-  }
 
-  //BURDE BLIVE FLYTTET TIL DB OG IKKE DB1
-  async allUsers() {
-    try {
-      await this.openDatabase();
-      console.dir("Connected to SQL Server");
-      const result = await sql.query`select email,user_id from [User]`;
-      console.log("all users found");
-      let numberOfPosts = Object.values(result.recordsets[0][0]);
-      console.log(numberOfPosts);
-      return result;
-    } catch (err) {
-      console.dir(err);
-      return;
-    }
   }
 
   //FØLG ANNONCE
@@ -363,5 +346,5 @@ class postDB {
   }
 }
 // exporter DB så fs metoderne kan bruges i andre sammenhæng
-module.exports = new postDB();
+module.exports = new PostDB();
 

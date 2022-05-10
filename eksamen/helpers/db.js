@@ -3,7 +3,7 @@ const sql = require('mssql');
 
 
 //Class 
-class userDB {
+class UserDB {
   //Etablerer en forbindelse til databasen med MS SGL
   async openDatabase() {
     try {
@@ -143,7 +143,7 @@ class userDB {
         return false;
 
         //tjekker om den fundne bruger har admin rettigheder gennem deres status id i databasen. Hvis brugeren har admin rettigheder retuneres true, hvis ikke retuneres false
-      } else if (result.recordset[0].status_id === 1) {
+      } else if (result.recordset[0].status_id === 3) {
         console.dir("User is admin");
         return true;
       } else {
@@ -257,4 +257,4 @@ class userDB {
   }
 }
 // exporter DB så metoderne kan bruges i andre sammenhæng
-module.exports = new userDB();
+module.exports = new UserDB();

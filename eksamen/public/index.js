@@ -246,7 +246,7 @@ function filterForPrice() {
     if (td) {
       txtValue = td.textContent || td.innerText;
       console.log(txtValue);
-      if (parseInt(txtValue) >= parseInt(input.value)) {
+      if (parseInt(txtValue) <= parseInt(input.value)) {
         tr[i].style.display = "";
       } else {
         tr[i].style.display = "none";
