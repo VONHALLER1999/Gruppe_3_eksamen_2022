@@ -298,7 +298,7 @@ app.post("/deletepost", async (req, res) => {
 
 app.get("/users", async (req, res) => {
   try {
-    const result = await db1.allUsers();
+    const result = await db.allUsers();
     let arr = Object.values(result.recordsets[0][0]);
     console.log(arr[1]);
     res.send(result);
@@ -388,4 +388,6 @@ app.post("/updatepost", async (req, res) => {
   }
 });
 
+
 module.exports = app; 
+

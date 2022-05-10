@@ -137,7 +137,6 @@ class userDB {
   //Tager 1 input som er med til at afgøre om brugeren har admin rettigheder eller ej.
   async isAdmin(email) {
     try {
-
       //Tjekker om brugeren er fundet i DB, hvis ikke returnere den "false"
       const result = await this.findUser(email);
       if (!result) {
@@ -240,7 +239,22 @@ class userDB {
       return;
     }
   }
+
+  //Viser hvor mange aktive opslag hver brugerprofil har på hjemmesiden
+  async allUsers() {
+    try {
+      await this.openDatabase();
+      console.dir("Connected to SQL Server");
+      const result = await sql.query`select email,user_id from [User]`;
+      console.log("all users found");
+      let numberOfPosts = Object.values(result.recordsets[0][0]);
+      console.log(numberOfPosts);
+      return result;
+    } catch (err) {
+      console.dir(err);
+      return;
+    }
+  }
 }
 // exporter DB så metoderne kan bruges i andre sammenhæng
 module.exports = new userDB();
-

@@ -3,7 +3,6 @@
 const sql = require('mssql');
 
 class postDB {
-
   
   async openDatabase() {
     try {
