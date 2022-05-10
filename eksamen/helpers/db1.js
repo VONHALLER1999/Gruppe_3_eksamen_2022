@@ -103,7 +103,7 @@ class postDB {
   //OPDATER POST
   //Virker ikke
   //BUG - UPDATE SQL QUERY virker åbenbart ikke ordentlig, kan godt opdatere en værdi, men ikke flere på en gang
-  async updatePost(post_id, price, description, categoryname, picture, postnummer, username) {
+  async updatePost(post_id, price, description, categoryname, postnummer, username) {
     try {
       // make sure that any items are correctly URL encoded in the connection string
       await this.openDatabase();
@@ -129,7 +129,6 @@ class postDB {
         await sql.query`UPDATE post
         SET price = ${price}, description = ${description},
         category_id = b.category_Id,
-        picture = ${picture},
         location_id =  c.location_id
         from post as a
         join Category as b

@@ -3,7 +3,7 @@ const sql = require('mssql');
 
 
 //Class 
-class DB {
+class userDB {
   //Etablerer en forbindelse til databasen med MS SGL
   async openDatabase() {
     try {
@@ -14,17 +14,6 @@ class DB {
       console.dir("Connected to SQL Server");
     } catch (err) {
       console.dir(err);
-    }
-  }
-
-  //husk at bruge await 
-  async funktionnavn(){
-    try {
-
-      await sql.query`Query her`;
-
-    }catch{
-
     }
   }
 
@@ -253,5 +242,5 @@ class DB {
   }
 }
 // exporter DB så metoderne kan bruges i andre sammenhæng
-module.exports = new DB();
+module.exports = new userDB();
 

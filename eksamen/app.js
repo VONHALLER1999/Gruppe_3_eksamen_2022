@@ -365,7 +365,6 @@ app.post("/updatepost", async (req, res) => {
       req.body.pris,
       req.body.descripton,
       req.body.kategori,
-      "req.body.picture",
       req.body.postalcode,
       req.session.username
     );
@@ -376,7 +375,6 @@ app.post("/updatepost", async (req, res) => {
       req.body.pris,
       req.body.descripton,
       req.body.kategori,
-      "req.body.picture",
       req.body.postalcode,
       req.session.username
     );
